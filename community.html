@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сообщество Steam</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--bg-primary:#171a21;--bg-secondary:#1b2838;--accent:#66c0f4;--text-primary:#c7d5e0;--text-secondary:#8f98a0;--border-color:rgba(255,255,255,0.1);--card-bg:#16202d}
+        [data-theme="light"]{--bg-primary:#f5f5f5;--bg-secondary:#ffffff;--accent:#1a9fff;--text-primary:#333333;--text-secondary:#666666;--border-color:rgba(0,0,0,0.1);--card-bg:#ffffff}
+        body{font-family:"Motiva Sans",Arial,sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;padding:20px}
+        .container{max-width:940px;margin:0 auto}
+        .post-creator{background:var(--bg-secondary);padding:20px;border-radius:3px;margin-bottom:20px;border:1px solid var(--border-color)}
+        .post-input{width:100%;background:#000;border:1px solid #333;padding:15px;color:#fff;border-radius:3px;resize:none;margin-bottom:10px;min-height:80px}
+        .btn-post{background:linear-gradient(to right, #47bfff 5%, #1a44c2 95%);color:#fff;border:none;padding:10px 30px;border-radius:2px;cursor:pointer;float:right}
+        #postsContainer{display:flex;flex-direction:column;gap:15px}
+        .post{background:var(--card-bg);padding:20px;border-radius:3px;border:1px solid var(--border-color);animation:fadeIn 0.3s ease}
+        .post-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+        .post-avatar{width:40px;height:40px;background:#2a475e;display:flex;align-items:center;justify-content:center;font-weight:bold;color:var(--accent)}
+        .post-author{font-weight:bold;color:var(--accent)}
+        .post-content{line-height:1.5;word-break:break-word}
+        .post-img{max-width:100%;margin-top:10px;border-radius:4px;display:block;border:1px solid #333}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+    </style>
+</head>
+<body data-theme="dark">
+
+<div class="container">
+    <h2>Активность сообщества</h2>
+    <div class="post-creator">
+        <textarea class="post-input" id="postInput" placeholder="Что у вас нового?"></textarea>
+        
+        <label style="cursor:pointer; color:var(--accent); float:left; margin-top:10px;">
+            📷 Фото <input type="file" id="fileInput" accept="image/*" style="display:none">
+        </label>
+        
+        <button class="btn-post" onclick="sendMessage()">Опубликовать</button>
+        <div style="clear:both"></div>
+        <div id="previewContainer" style="display:none; margin-top:10px;">
+            <img id="imagePreview" src="" style="max-width:150px; border:1px solid var(--accent)">
+        </div>
+    </div>
+    <div id="postsContainer"></div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+const input = document.getElementById('postInput');
+const container = document.getElementById('postsContainer');
+const fileInput = document.getElementById('fileInput');
+const previewContainer = document.getElementById('previewContainer');
+const imagePreview = document.getElementById('imagePreview');
+
+let selectedImageBase64 = null;
+
+// Обработка выбора файла (фото)
+fileInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        // Проверка размера (не больше 5Мб для стабильности)
+        if (file.size > 5 * 1024 * 1024) {
+            alert("Файл слишком большой! Выберите фото до 5Мб.");
+            this.value = '';
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            selectedImageBase64 = e.target.result;
+            imagePreview.src = selectedImageBase64;
+            previewContainer.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Функция для создания HTML поста
+function renderPost(data, isHistory = false) {
+    const post = document.createElement('div');
+    post.className = 'post';
+    
+    const isMe = data.id === socket.id;
+    const authorName = data.username || "Аноним";
+
+    post.innerHTML = `
+        <div class="post-header">
+            <div class="post-avatar">${authorName[0].toUpperCase()}</div>
+            <div>
+                <div class="post-author" style="${isMe ? 'color:var(--accent)' : ''}">${authorName}</div>
+                <div class="post-time">${data.time || ''}</div>
+            </div>
+        </div>
+        <div class="post-content">
+            ${data.text}
+            ${data.image ? `<img src="${data.image}" style="max-width:100%; margin-top:10px; border-radius:4px; display:block; border:1px solid #333;">` : ''}
+        </div>
+    `;
+
+    if (isHistory) {
+        // При загрузке истории старые сообщения идут вниз
+        container.appendChild(post);
+    } else {
+        // Новое сообщение сразу в начало
+        container.insertBefore(post, container.firstChild);
+    }
+}
+
+function sendMessage() {
+    const text = input.value.trim();
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const username = user ? user.username : "Аноним";
+
+    if (text || selectedImageBase64) {
+        const messageData = {
+            text: text,
+            image: selectedImageBase64,
+            username: username,
+            id: socket.id,
+            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+        };
+        
+        socket.emit('chat message', messageData);
+        
+        // Сброс интерфейса
+        input.value = '';
+        selectedImageBase64 = null;
+        previewContainer.style.display = 'none';
+        fileInput.value = '';
+    }
+}
+
+// ПРИЕМ НОВОГО СООБЩЕНИЯ
+socket.on('chat message', (data) => {
+    renderPost(data);
+});
+
+// ЗАГРУЗКА ИСТОРИИ (чтобы не пропадало при обновлении)
+socket.on('load history', (history) => {
+    container.innerHTML = ''; // Очищаем контейнер
+    // Отрисовываем историю от новых к старым
+    history.reverse().forEach(data => {
+        renderPost(data, true);
+    });
+});
+</script>
+</body>
+</html>

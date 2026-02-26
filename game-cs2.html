@@ -1,0 +1,376 @@
+<!-- game-cs2.html - Counter-Strike 2 -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter-Strike 2 - Steam</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #171a21; --bg-secondary: #1b2838; --bg-tertiary: #2a475e;
+            --accent: #66c0f4; --accent-hover: #1999ff; --text-primary: #c7d5e0;
+            --text-secondary: #8f98a0; --border-color: rgba(255,255,255,0.1);
+            --card-bg: #16202d; --success: #a1cd44; --danger: #ff6b6b;
+            --gold: #ffd700; --warning: #ff9800;
+        }
+        [data-theme="light"] {
+            --bg-primary: #f5f5f5; --bg-secondary: #ffffff; --bg-tertiary: #e8e8e8;
+            --accent: #1a9fff; --accent-hover: #0066cc; --text-primary: #333333;
+            --text-secondary: #666666; --border-color: rgba(0,0,0,0.1);
+            --card-bg: #ffffff; --success: #5a8f11; --danger: #d44;
+        }
+        body { font-family: "Motiva Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; font-size: 14px; }
+        .header { background: #171a21; padding: 0 20px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 50px; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #c7d5e0; font-size: 22px; font-weight: 600; }
+        .nav { display: flex; gap: 0; }
+        .nav a { color: #c7d5e0; text-decoration: none; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; padding: 0 15px; height: 50px; display: flex; align-items: center; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .nav a:hover { color: #ffffff; border-bottom-color: #66c0f4; }
+        .nav a.active { color: #66c0f4; border-bottom-color: #66c0f4; }
+        .header-actions { display: flex; align-items: center; gap: 15px; }
+        .store-switch { display: flex; background: rgba(0,0,0,0.3); border-radius: 3px; padding: 3px; }
+        .store-switch a { padding: 6px 15px; border-radius: 2px; font-size: 12px; text-transform: uppercase; text-decoration: none; color: var(--text-secondary); transition: all 0.2s; }
+        .store-switch a:hover { color: var(--text-primary); }
+        .store-switch a.active { background: var(--accent); color: white; }
+        .cart-btn { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: #c7d5e0; padding: 5px 15px; border-radius: 2px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 8px; transition: all 0.2s; position: relative; text-decoration: none; }
+        .cart-btn:hover { background: rgba(102,192,244,0.2); border-color: #66c0f4; color: white; }
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .breadcrumb { display: flex; gap: 10px; align-items: center; margin-bottom: 20px; font-size: 13px; color: var(--text-secondary); }
+        .breadcrumb a { color: var(--accent); text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .hero-section { background: linear-gradient(135deg, #2a475e 0%, #1b2838 100%); border-radius: 3px; padding: 40px; margin-bottom: 30px; position: relative; overflow: hidden; border: 1px solid var(--border-color); }
+        .hero-content { position: relative; z-index: 1; display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: start; }
+        .game-cover { background: linear-gradient(135deg, #1b2838, #2a475e); border-radius: 3px; aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; font-size: 120px; border: 1px solid var(--border-color); }
+        .game-info h1 { font-size: 42px; margin-bottom: 10px; color: white; }
+        .game-meta { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+        .meta-badge { background: rgba(102,192,244,0.1); color: var(--accent); padding: 4px 12px; border-radius: 2px; font-size: 12px; text-transform: uppercase; }
+        .meta-badge.free { background: rgba(161,205,68,0.1); color: var(--success); }
+        .game-rating { display: flex; align-items: center; gap: 10px; color: var(--gold); font-size: 18px; }
+        .rating-count { color: var(--text-secondary); font-size: 14px; }
+        .game-description { font-size: 16px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 25px; max-width: 600px; }
+        .game-actions { display: flex; gap: 15px; align-items: center; }
+        .btn-primary { background: linear-gradient(to right, #47bfff 5%, #1a44c2 60%); border: none; color: white; padding: 15px 40px; font-size: 16px; font-weight: 500; border-radius: 2px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-primary:hover { background: linear-gradient(to right, #66c0f4 5%, #2a56d4 60%); box-shadow: 0 0 15px rgba(102,192,244,0.4); }
+        .btn-secondary { background: rgba(102,192,244,0.1); border: 1px solid var(--accent); color: var(--accent); padding: 15px 30px; font-size: 16px; border-radius: 2px; cursor: pointer; transition: all 0.2s; }
+        .btn-secondary:hover { background: var(--accent); color: white; }
+        .free-label { font-size: 24px; color: var(--success); font-weight: 600; }
+        .tabs { margin-bottom: 40px; }
+        .tab-header { display: flex; gap: 0; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
+        .tab-btn { background: none; border: none; color: var(--text-secondary); padding: 15px 25px; font-size: 14px; cursor: pointer; transition: all 0.2s; border-bottom: 2px solid transparent; text-transform: uppercase; }
+        .tab-btn:hover { color: var(--text-primary); }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .about-section { background: var(--card-bg); padding: 25px; border-radius: 3px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .about-title { font-size: 18px; margin-bottom: 15px; color: var(--text-primary); }
+        .about-text { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+        .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
+        .feature-item { display: flex; align-items: center; gap: 10px; padding: 15px; background: var(--bg-secondary); border-radius: 3px; }
+        .feature-icon { font-size: 24px; }
+        .feature-text { font-size: 14px; color: var(--text-primary); }
+        .specs-table { width: 100%; border-collapse: collapse; }
+        .specs-table tr { border-bottom: 1px solid var(--border-color); }
+        .specs-table td { padding: 15px; font-size: 14px; }
+        .specs-table td:first-child { color: var(--text-secondary); width: 30%; }
+        .specs-table td:last-child { color: var(--text-primary); }
+        .review-card { background: var(--card-bg); padding: 20px; border-radius: 3px; margin-bottom: 15px; border: 1px solid var(--border-color); }
+        .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .review-author { display: flex; align-items: center; gap: 10px; }
+        .review-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #2a475e, #1b2838); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .review-name { font-weight: 500; color: var(--accent); }
+        .review-hours { font-size: 12px; color: var(--text-secondary); }
+        .review-rating { color: var(--gold); font-size: 16px; }
+        .review-text { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+        .review-date { font-size: 12px; color: var(--text-secondary); margin-top: 10px; }
+        .dlc-section { background: var(--card-bg); padding: 25px; border-radius: 3px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .dlc-title { font-size: 18px; margin-bottom: 15px; color: var(--text-primary); }
+        .dlc-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--bg-secondary); border-radius: 3px; margin-bottom: 10px; }
+        .dlc-icon { font-size: 40px; }
+        .dlc-info { flex: 1; }
+        .dlc-name { font-size: 14px; color: var(--text-primary); margin-bottom: 5px; }
+        .dlc-desc { font-size: 12px; color: var(--text-secondary); }
+        .dlc-price { font-size: 16px; color: var(--text-primary); font-weight: 600; }
+        .section { margin-bottom: 40px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+        .section-title { font-size: 18px; text-transform: uppercase; color: var(--text-primary); font-weight: 500; letter-spacing: 1px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .product-card { background: var(--card-bg); border-radius: 3px; overflow: hidden; transition: all 0.3s ease; cursor: pointer; border: 1px solid var(--border-color); text-decoration: none; color: inherit; display: block; }
+        .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); border-color: var(--accent); }
+        .product-image { width: 100%; height: 150px; background: linear-gradient(135deg, #1b2838, #2a475e); display: flex; align-items: center; justify-content: center; font-size: 60px; }
+        .product-info-small { padding: 12px; }
+        .product-title-small { font-size: 13px; font-weight: 500; margin-bottom: 5px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-price-small { font-size: 14px; color: var(--text-primary); font-weight: 600; }
+        .theme-toggle { position: fixed; bottom: 30px; right: 30px; background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 20px; z-index: 100; transition: all 0.2s; }
+        .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+        @media (max-width: 768px) {
+            .nav { display: none; }
+            .store-switch { display: none; }
+            .hero-content { grid-template-columns: 1fr; }
+            .game-cover { max-width: 200px; margin: 0 auto; }
+            .game-info h1 { font-size: 28px; }
+            .features-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">STEAM</a>
+            <nav class="nav">
+                <a href="index.html" class="active">Магазин</a>
+                <a href="library.html">Библиотека</a>
+                <a href="community.html">Сообщество</a>
+                <a href="profile.html">Профиль</a>
+            </nav>
+            <div class="header-actions">
+                <div class="store-switch">
+                    <a href="index.html" class="active">Игры</a>
+                    <a href="merch.html">Мерч</a>
+                </div>
+                <a href="#" class="cart-btn">Корзина</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="breadcrumb">
+            <a href="index.html">Магазин</a>
+            <span>></span>
+            <a href="index.html?category=action">Экшен</a>
+            <span>></span>
+            <span>Counter-Strike 2</span>
+        </div>
+
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="game-cover">🔫</div>
+                <div class="game-info">
+                    <h1>Counter-Strike 2</h1>
+                    <div class="game-meta">
+                        <span class="meta-badge free">Бесплатная игра</span>
+                        <span class="meta-badge">Мультиплеер</span>
+                        <span class="meta-badge">Соревновательная</span>
+                    </div>
+                    <div class="game-rating">
+                        <span>★★★★★</span>
+                        <span class="rating-count">(1,847,293 отзывов) | Очень положительные</span>
+                    </div>
+                    <p class="game-description">
+                        Легендарный тактический шутер от первого лица, полностью перестроенный на движке Source 2. 
+                        20 лет Counter-Strike достигли пика. Counter-Strike 2 — это новый стандарт для CS.
+                    </p>
+                    <div class="game-actions">
+                        <span class="free-label">Бесплатно</span>
+                        <button class="btn-primary" onclick="installGame()">Играть</button>
+                        <button class="btn-secondary" onclick="addToWishlist()">В список желаемого</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab-header">
+                <button class="tab-btn active" onclick="showTab('about')">Об игре</button>
+                <button class="tab-btn" onclick="showTab('specs')">Системные требования</button>
+                <button class="tab-btn" onclick="showTab('reviews')">Отзывы</button>
+                <button class="tab-btn" onclick="showTab('dlc')">Контент</button>
+            </div>
+
+            <div id="about" class="tab-content active">
+                <div class="about-section">
+                    <div class="about-title">О Counter-Strike 2</div>
+                    <p class="about-text">
+                        Counter-Strike 2 — это бесплатное обновление до CS:GO, которое знаменует собой крупнейший технологический 
+                        скачок в истории Counter-Strike. Разработанная на движке Source 2, игра обладает современной графикой, 
+                        улучшенной физикой и революционными игровыми механиками.
+                    </p>
+                    <div class="features-grid">
+                        <div class="feature-item"><span class="feature-icon">🎯</span><span class="feature-text">Sub-tick обновления для мгновенной регистрации выстрелов</span></div>
+                        <div class="feature-item"><span class="feature-icon">💨</span><span class="feature-text">Реалистичный дым с физикой Source 2</span></div>
+                        <div class="feature-item"><span class="feature-icon">🗺️</span><span class="feature-text">Переработанные классические карты</span></div>
+                        <div class="feature-item"><span class="feature-icon">🎮</span><span class="feature-text">Улучшенная система матчмейкинга</span></div>
+                        <div class="feature-item"><span class="feature-icon">👁️</span><span class="feature-text">Улучшенная видимость игроков</span></div>
+                        <div class="feature-item"><span class="feature-icon">🔧</span><span class="feature-text">Новые инструменты для создателей контента</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="specs" class="tab-content">
+                <table class="specs-table">
+                    <tr><td colspan="2"><strong>Минимальные требования</strong></td></tr>
+                    <tr><td>ОС</td><td>Windows 10 64-bit</td></tr>
+                    <tr><td>Процессор</td><td>4 hardware CPU threads - Intel Core i5 750 или выше</td></tr>
+                    <tr><td>Оперативная память</td><td>8 GB RAM</td></tr>
+                    <tr><td>Видеокарта</td><td>Video card must be 1 GB or more</td></tr>
+                    <tr><td>DirectX</td><td>Версии 11</td></tr>
+                    <tr><td>Сеть</td><td>Широкополосное подключение к интернету</td></tr>
+                    <tr><td>Место на диске</td><td>85 GB</td></tr>
+                    <tr><td colspan="2"><strong>Рекомендуемые требования</strong></td></tr>
+                    <tr><td>ОС</td><td>Windows 10/11 64-bit</td></tr>
+                    <tr><td>Процессор</td><td>Intel Core i7-9700K или AMD Ryzen 7 2700X</td></tr>
+                    <tr><td>Оперативная память</td><td>16 GB RAM</td></tr>
+                    <tr><td>Видеокарта</td><td>NVIDIA GeForce GTX 1060 / AMD Radeon RX 580</td></tr>
+                    <tr><td>DirectX</td><td>Версии 11</td></tr>
+                    <tr><td>Место на диске</td><td>85 GB SSD</td></tr>
+                </table>
+            </div>
+
+            <div id="reviews" class="tab-content">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-author">
+                            <div class="review-avatar">👤</div>
+                            <div>
+                                <div class="review-name">s1mple_fan</div>
+                                <div class="review-hours">4,847 часов в игре</div>
+                            </div>
+                        </div>
+                        <span class="review-rating">★★★★★</span>
+                    </div>
+                    <p class="review-text">
+                        Переход на Source 2 сделал игру намного лучше! Дым теперь работает как настоящий, 
+                        тики не лагают, регистрация попаданий идеальная. Лучший тактический шутер всех времён!
+                    </p>
+                    <div class="review-date">20 января 2025</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-author">
+                            <div class="review-avatar">👤</div>
+                            <div>
+                                <div class="review-name">CS_Veteran</div>
+                                <div class="review-hours">12,394 часов в игре</div>
+                            </div>
+                        </div>
+                        <span class="review-rating">★★★★★</span>
+                    </div>
+                    <p class="review-text">
+                        Играю с 1.6, CS2 — это то, чего мы ждали. Новые карты выглядят потрясающе, 
+                        особенно Overpass 2.0. Матчмейкинг стал намного честнее.
+                    </p>
+                    <div class="review-date">18 января 2025</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-author">
+                            <div class="review-avatar">👤</div>
+                            <div>
+                                <div class="review-name">NewPlayer2024</div>
+                                <div class="review-hours">156 часов в игре</div>
+                            </div>
+                        </div>
+                        <span class="review-rating">★★★★☆</span>
+                    </div>
+                    <p class="review-text">
+                        Отличная игра, но порог входа высокий. Много читеров в низких рангах. 
+                        Но когда попадаешь в нормальную катку — это лучший опыт в шутерах!
+                    </p>
+                    <div class="review-date">15 января 2025</div>
+                </div>
+            </div>
+
+            <div id="dlc" class="tab-content">
+                <div class="dlc-section">
+                    <div class="dlc-title">Prime Status Upgrade</div>
+                    <div class="dlc-item">
+                        <span class="dlc-icon">⭐</span>
+                        <div class="dlc-info">
+                            <div class="dlc-name">Prime Status</div>
+                            <div class="dlc-desc">Доступ к Prime-матчмейкингу, еженедельным наградам и эксклюзивным сувенирам</div>
+                        </div>
+                        <span class="dlc-price">1 249 ₽</span>
+                    </div>
+                </div>
+                <div class="dlc-section">
+                    <div class="dlc-title">Операции и кейсы</div>
+                    <div class="dlc-item">
+                        <span class="dlc-icon">🔑</span>
+                        <div class="dlc-info">
+                            <div class="dlc-name">Ключ от кейса</div>
+                            <div class="dlc-desc">Открывает один оружейный кейс</div>
+                        </div>
+                        <span class="dlc-price">199 ₽</span>
+                    </div>
+                    <div class="dlc-item">
+                        <span class="dlc-icon">📦</span>
+                        <div class="dlc-info">
+                            <div class="dlc-name">Набор из 5 ключей</div>
+                            <div class="dlc-desc">Экономия 10%</div>
+                        </div>
+                        <span class="dlc-price">895 ₽</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Похожие игры</h2>
+            </div>
+            <div class="products-grid">
+                <a href="game-dota2.html" class="product-card">
+                    <div class="product-image">⚔️</div>
+                    <div class="product-info-small">
+                        <div class="product-title-small">Dota 2</div>
+                        <div class="product-price-small">Бесплатно</div>
+                    </div>
+                </a>
+                <a href="game-tf2.html" class="product-card">
+                    <div class="product-image">🎩</div>
+                    <div class="product-info-small">
+                        <div class="product-title-small">Team Fortress 2</div>
+                        <div class="product-price-small">Бесплатно</div>
+                    </div>
+                </a>
+                <a href="game-l4d2.html" class="product-card">
+                    <div class="product-image">🧟</div>
+                    <div class="product-info-small">
+                        <div class="product-title-small">Left 4 Dead 2</div>
+                        <div class="product-price-small">199 ₽</div>
+                    </div>
+                </a>
+                <a href="game-hl-alyx.html" class="product-card">
+                    <div class="product-image">🥽</div>
+                    <div class="product-info-small">
+                        <div class="product-title-small">Half-Life: Alyx</div>
+                        <div class="product-price-small">1 999 ₽</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <script>
+        let isDarkTheme = true;
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            isDarkTheme = savedTheme === 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+            document.querySelector('.theme-toggle').textContent = isDarkTheme ? '🌙' : '☀️';
+        }
+        function toggleTheme() {
+            isDarkTheme = !isDarkTheme;
+            const theme = isDarkTheme ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            document.querySelector('.theme-toggle').textContent = isDarkTheme ? '🌙' : '☀️';
+        }
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+        function installGame() {
+            alert('Counter-Strike 2 добавлен в библиотеку!');
+        }
+        function addToWishlist() {
+            alert('Добавлено в список желаемого!');
+        }
+        loadTheme();
+    </script>
+</body>
+</html>

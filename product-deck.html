@@ -1,0 +1,857 @@
+<!-- product-deck.html - Steam Deck OLED -->
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steam Deck OLED 1TB - Steam</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --bg-primary: #171a21;
+        --bg-secondary: #1b2838;
+        --bg-tertiary: #2a475e;
+        --accent: #66c0f4;
+        --accent-hover: #1999ff;
+        --text-primary: #c7d5e0;
+        --text-secondary: #8f98a0;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --card-bg: #16202d;
+        --success: #a1cd44;
+        --danger: #ff6b6b;
+        --gold: #ffd700;
+        --warning: #ff9800;
+      }
+      [data-theme="light"] {
+        --bg-primary: #f5f5f5;
+        --bg-secondary: #ffffff;
+        --bg-tertiary: #e8e8e8;
+        --accent: #1a9fff;
+        --accent-hover: #0066cc;
+        --text-primary: #333333;
+        --text-secondary: #666666;
+        --border-color: rgba(0, 0, 0, 0.1);
+        --card-bg: #ffffff;
+        --success: #5a8f11;
+        --danger: #d44;
+      }
+      body {
+        font-family:
+          "Motiva Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        font-size: 14px;
+      }
+      .header {
+        background: #171a21;
+        padding: 0 20px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 50px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: #c7d5e0;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .nav {
+        display: flex;
+        gap: 0;
+      }
+      .nav a {
+        color: #c7d5e0;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 1px;
+        padding: 0 15px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+      }
+      .nav a:hover {
+        color: #ffffff;
+        border-bottom-color: #66c0f4;
+      }
+      .nav a.active {
+        color: #66c0f4;
+        border-bottom-color: #66c0f4;
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .store-switch {
+        display: flex;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 3px;
+        padding: 3px;
+      }
+      .store-switch a {
+        padding: 6px 15px;
+        border-radius: 2px;
+        font-size: 12px;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.2s;
+      }
+      .store-switch a:hover {
+        color: var(--text-primary);
+      }
+      .store-switch a.active {
+        background: var(--accent);
+        color: white;
+      }
+      .cart-btn {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-color);
+        color: #c7d5e0;
+        padding: 5px 15px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+        position: relative;
+        text-decoration: none;
+      }
+      .cart-btn:hover {
+        background: rgba(102, 192, 244, 0.2);
+        border-color: #66c0f4;
+        color: white;
+      }
+      .cart-count {
+        background: #ff6b6b;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: bold;
+        position: absolute;
+        top: -8px;
+        right: -8px;
+      }
+      .cart-count.active {
+        display: flex;
+      }
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .breadcrumb {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+      .breadcrumb a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+      .product-page {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+      .product-gallery {
+        background: var(--card-bg);
+        border-radius: 3px;
+        padding: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        border: 1px solid var(--border-color);
+      }
+      .product-main-image {
+        font-size: 200px;
+      }
+      .product-info h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+        color: var(--text-primary);
+      }
+      .product-meta {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .meta-badge {
+        background: rgba(102, 192, 244, 0.1);
+        color: var(--accent);
+        padding: 4px 12px;
+        border-radius: 2px;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+      .meta-badge.in-stock {
+        background: rgba(161, 205, 68, 0.1);
+        color: var(--success);
+      }
+      .product-description {
+        font-size: 15px;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 25px;
+      }
+      .product-price-block {
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 3px;
+        margin-bottom: 25px;
+        border: 1px solid var(--border-color);
+      }
+      .price-label {
+        font-size: 12px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      .price-value {
+        font-size: 36px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      .product-actions {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+      .btn-primary {
+        flex: 1;
+        background: linear-gradient(to right, #47bfff 5%, #1a44c2 60%);
+        border: none;
+        color: white;
+        padding: 15px 30px;
+        font-size: 15px;
+        font-weight: 500;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(to right, #66c0f4 5%, #2a56d4 60%);
+        box-shadow: 0 0 15px rgba(102, 192, 244, 0.4);
+      }
+      .btn-secondary {
+        background: rgba(102, 192, 244, 0.1);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 15px 30px;
+        font-size: 15px;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-secondary:hover {
+        background: var(--accent);
+        color: white;
+      }
+      .product-features {
+        list-style: none;
+        margin-bottom: 25px;
+      }
+      .product-features li {
+        padding: 10px 0;
+        font-size: 14px;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .product-features li::before {
+        content: "✓";
+        color: var(--success);
+        font-weight: bold;
+      }
+      .tabs {
+        margin-bottom: 40px;
+      }
+      .tab-header {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 20px;
+      }
+      .tab-btn {
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        padding: 15px 25px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        border-bottom: 2px solid transparent;
+        text-transform: uppercase;
+      }
+      .tab-btn:hover {
+        color: var(--text-primary);
+      }
+      .tab-btn.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      .specs-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .specs-table tr {
+        border-bottom: 1px solid var(--border-color);
+      }
+      .specs-table td {
+        padding: 15px;
+        font-size: 14px;
+      }
+      .specs-table td:first-child {
+        color: var(--text-secondary);
+        width: 40%;
+      }
+      .specs-table td:last-child {
+        color: var(--text-primary);
+      }
+      .review-card {
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 3px;
+        margin-bottom: 15px;
+        border: 1px solid var(--border-color);
+      }
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .review-author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .review-avatar {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #2a475e, #1b2838);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+      .review-name {
+        font-weight: 500;
+        color: var(--accent);
+      }
+      .review-rating {
+        color: var(--gold);
+        font-size: 16px;
+      }
+      .review-text {
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+      .review-date {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 10px;
+      }
+      .bundle-section {
+        background: var(--card-bg);
+        padding: 25px;
+        border-radius: 3px;
+        margin-bottom: 20px;
+        border: 1px solid var(--border-color);
+      }
+      .bundle-title {
+        font-size: 16px;
+        margin-bottom: 15px;
+        color: var(--text-primary);
+      }
+      .bundle-items {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .bundle-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+        background: var(--bg-secondary);
+        border-radius: 3px;
+      }
+      .bundle-item-icon {
+        font-size: 30px;
+      }
+      .bundle-item-name {
+        flex: 1;
+        font-size: 14px;
+        color: var(--text-primary);
+      }
+      .bundle-item-price {
+        font-size: 14px;
+        color: var(--text-secondary);
+        text-decoration: line-through;
+      }
+      .bundle-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid var(--border-color);
+      }
+      .bundle-save {
+        color: var(--success);
+        font-size: 14px;
+      }
+      .bundle-price {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      .section {
+        margin-bottom: 40px;
+      }
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .section-title {
+        font-size: 18px;
+        text-transform: uppercase;
+        color: var(--text-primary);
+        font-weight: 500;
+        letter-spacing: 1px;
+      }
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+      }
+      .product-card {
+        background: var(--card-bg);
+        border-radius: 3px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+      .product-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent);
+      }
+      .product-image {
+        width: 100%;
+        height: 150px;
+        background: linear-gradient(135deg, #1b2838, #2a475e);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+      }
+      .product-info-small {
+        padding: 12px;
+      }
+      .product-title-small {
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .product-price-small {
+        font-size: 14px;
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+      .theme-toggle {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        z-index: 100;
+        transition: all 0.2s;
+      }
+      .theme-toggle:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      @media (max-width: 768px) {
+        .nav {
+          display: none;
+        }
+        .store-switch {
+          display: none;
+        }
+        .product-page {
+          grid-template-columns: 1fr;
+        }
+        .product-gallery {
+          min-height: 250px;
+        }
+        .product-main-image {
+          font-size: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <a href="index.html" class="logo">STEAM</a>
+        <nav class="nav">
+          <a href="index.html">Магазин</a>
+          <a href="library.html">Библиотека</a>
+          <a href="community.html">Сообщество</a>
+          <a href="profile.html">Профиль</a>
+        </nav>
+        <div class="header-actions">
+          <div class="store-switch">
+            <a href="index.html">Игры</a>
+            <a href="merch.html" class="active">Мерч</a>
+          </div>
+          <a href="#" class="cart-btn">Корзина</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-container">
+      <div class="breadcrumb">
+        <a href="merch.html">Мерч</a>
+        <span>></span>
+        <a href="#hardware">Периферия</a>
+        <span>></span>
+        <span>Steam Deck OLED 1TB</span>
+      </div>
+
+      <div class="product-page">
+        <div class="product-gallery" >
+          <div class="product-main-image" backgroundcolor="#1b2838">
+            <img
+              src="images/Oledimain.jpg"
+              alt="Steam Deck OLED 1TB"
+              style="width: 519px; height: 710px; border-radius: 3px"
+            />
+          </div>
+        </div>
+        <div class="product-info">
+          <h1>Steam Deck OLED 1TB</h1>
+          <div class="product-meta">
+            <span class="meta-badge in-stock">В наличии</span>
+            <span class="meta-badge">Официальный продукт Valve</span>
+            <span class="meta-badge">Гарантия 1 год</span>
+          </div>
+          <p class="product-description">
+            Самый продвинутый портативный игровой ПК от Valve. OLED-экран с HDR
+            обеспечивает невероятную цветопередачу и глубину чёрного.
+            Увеличенное время автономной работы до 12 часов, быстрая зарядка и
+            Wi-Fi 6E для стабильного онлайн-гейминга.
+          </p>
+          <div class="product-price-block">
+            <div class="price-label">Цена</div>
+            <div class="price-value">74 999 ₽</div>
+          </div>
+          <div class="product-actions">
+            <button class="btn-primary" onclick="addToCart()">В корзину</button>
+            <button class="btn-secondary" onclick="addToWishlist()">
+              В список желаемого
+            </button>
+          </div>
+          <ul class="product-features">
+            <li>OLED-экран 7.4" с HDR, разрешение 1280x800</li>
+            <li>1TB NVMe SSD (PCIe Gen 3 x4)</li>
+            <li>Процессор AMD APU (Zen 2 + RDNA 2)</li>
+            <li>Wi-Fi 6E, Bluetooth 5.3</li>
+            <li>Батарея 50Wh (до 12 часов игры)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab-header">
+          <button class="tab-btn active" onclick="showTab('specs')">
+            Характеристики
+          </button>
+          <button class="tab-btn" onclick="showTab('bundle')">Комплект</button>
+          <button class="tab-btn" onclick="showTab('reviews')">
+            Отзывы (847)
+          </button>
+        </div>
+
+        <div id="specs" class="tab-content active">
+          <table class="specs-table">
+            <tr>
+              <td>Экран</td>
+              <td>OLED 7.4", 1280x800, HDR, 90Hz</td>
+            </tr>
+            <tr>
+              <td>Процессор</td>
+              <td>AMD Custom APU (4 ядра Zen 2, до 3.5GHz)</td>
+            </tr>
+            <tr>
+              <td>Видеокарта</td>
+              <td>AMD RDNA 2 (8 CUs, до 1.6GHz)</td>
+            </tr>
+            <tr>
+              <td>Оперативная память</td>
+              <td>16GB LPDDR5</td>
+            </tr>
+            <tr>
+              <td>Накопитель</td>
+              <td>1TB NVMe SSD (PCIe Gen 3 x4)</td>
+            </tr>
+            <tr>
+              <td>Беспроводная связь</td>
+              <td>Wi-Fi 6E, Bluetooth 5.3</td>
+            </tr>
+            <tr>
+              <td>Батарея</td>
+              <td>50Wh Li-ion</td>
+            </tr>
+            <tr>
+              <td>Время работы</td>
+              <td>3-12 часов (зависит от игры)</td>
+            </tr>
+            <tr>
+              <td>Зарядка</td>
+              <td>USB-C, 45W, 0-80% за 45 мин</td>
+            </tr>
+            <tr>
+              <td>Вес</td>
+              <td>640 г</td>
+            </tr>
+            <tr>
+              <td>Размеры</td>
+              <td>298 x 117 x 49 мм</td>
+            </tr>
+            <tr>
+              <td>Операционная система</td>
+              <td>SteamOS 3.0 (Arch Linux)</td>
+            </tr>
+          </table>
+        </div>
+
+        <div id="bundle" class="tab-content">
+          <div class="bundle-section">
+            <div class="bundle-title">Официальный комплект Steam Deck OLED</div>
+            <div class="bundle-items">
+              <div class="bundle-item">
+                <span class="bundle-item-icon">🎮</span>
+                <span class="bundle-item-name">Steam Deck OLED 1TB</span>
+                <span class="bundle-item-price">74 999 ₽</span>
+              </div>
+              <div class="bundle-item">
+                <span class="bundle-item-icon">🎒</span>
+                <span class="bundle-item-name">Чехол Carry Case</span>
+                <span class="bundle-item-price">3 999 ₽</span>
+              </div>
+              <div class="bundle-item">
+                <span class="bundle-item-icon">🔌</span>
+                <span class="bundle-item-name">Блок питания 45W</span>
+                <span class="bundle-item-price">2 499 ₽</span>
+              </div>
+              <div class="bundle-item">
+                <span class="bundle-item-icon">🎁</span>
+                <span class="bundle-item-name">Набор наклеек Steam</span>
+                <span class="bundle-item-price">799 ₽</span>
+              </div>
+            </div>
+            <div class="bundle-total">
+              <span class="bundle-save">Экономия 2 298 ₽</span>
+              <span class="bundle-price">74 999 ₽</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="reviews" class="tab-content">
+          <div class="review-card">
+            <div class="review-header">
+              <div class="review-author">
+                <div class="review-avatar">👤</div>
+                <span class="review-name">AlexGamer</span>
+              </div>
+              <span class="review-rating">★★★★★</span>
+            </div>
+            <p class="review-text">
+              Лучшая покупка за последние годы! Играю в Cyberpunk 2077 на
+              высоких настройках с 40+ FPS. OLED-экран просто волшебный, цвета
+              невероятные. Батареи хватает на 6-7 часов в требовательных играх.
+            </p>
+            <div class="review-date">15 января 2025</div>
+          </div>
+          <div class="review-card">
+            <div class="review-header">
+              <div class="review-author">
+                <div class="review-avatar">👤</div>
+                <span class="review-name">SteamFan99</span>
+              </div>
+              <span class="review-rating">★★★★★</span>
+            </div>
+            <p class="review-text">
+              Перешёл с LCD версии на OLED - разница огромная! Экран ярче,
+              чёрный цвет действительно чёрный. Wi-Fi 6E заметно улучшил
+              стабильность в онлайн-играх. Зарядка теперь намного быстрее.
+            </p>
+            <div class="review-date">10 января 2025</div>
+          </div>
+          <div class="review-card">
+            <div class="review-header">
+              <div class="review-author">
+                <div class="review-avatar">👤</div>
+                <span class="review-name">PortableGaming</span>
+              </div>
+              <span class="review-rating">★★★★☆</span>
+            </div>
+            <p class="review-text">
+              Отличное устройство, но есть нюансы. В некоторых играх приходится
+              настраивать графику для стабильных 40 FPS. Но в целом - лучший
+              портативный ПК на рынке. SteamOS очень удобная.
+            </p>
+            <div class="review-date">5 января 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Похожие товары</h2>
+        </div>
+        <div class="products-grid">
+          <a href="product-dock-deck.html" class="product-card">
+            <div class="product-image">🔌</div>
+            <div class="product-info-small">
+              <div class="product-title-small">Док-станция Steam Deck</div>
+              <div class="product-price-small">8 999 ₽</div>
+            </div>
+          </a>
+          <a href="product-backpack-steam.html" class="product-card">
+            <div class="product-image">🎒</div>
+            <div class="product-info-small">
+              <div class="product-title-small">
+                Рюкзак Steam Deck Carry Case
+              </div>
+              <div class="product-price-small">3 999 ₽</div>
+            </div>
+          </a>
+          <a href="product-index-vr.html" class="product-card">
+            <div class="product-image">🥽</div>
+            <div class="product-info-small">
+              <div class="product-title-small">Valve Index VR Full Kit</div>
+              <div class="product-price-small">119 999 ₽</div>
+            </div>
+          </a>
+          <a href="product-controller-steam.html" class="product-card">
+            <div class="product-image">🎮</div>
+            <div class="product-info-small">
+              <div class="product-title-small">Steam Controller</div>
+              <div class="product-price-small">8 999 ₽</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <script>
+      let isDarkTheme = true;
+      function loadTheme() {
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        isDarkTheme = savedTheme === "dark";
+        document.body.setAttribute("data-theme", savedTheme);
+        document.querySelector(".theme-toggle").textContent = isDarkTheme
+          ? "🌙"
+          : "☀️";
+      }
+      function toggleTheme() {
+        isDarkTheme = !isDarkTheme;
+        const theme = isDarkTheme ? "dark" : "light";
+        document.body.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+        document.querySelector(".theme-toggle").textContent = isDarkTheme
+          ? "🌙"
+          : "☀️";
+      }
+      function showTab(tabName) {
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((content) => content.classList.remove("active"));
+        event.target.classList.add("active");
+        document.getElementById(tabName).classList.add("active");
+      }
+      function addToCart() {
+        alert("Steam Deck OLED добавлен в корзину!");
+      }
+      function addToWishlist() {
+        alert("Добавлено в список желаемого!");
+      }
+      loadTheme();
+    </script>
+  </body>
+</html>

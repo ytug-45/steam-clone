@@ -1,0 +1,352 @@
+<!-- library.html - Библиотека игр -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Библиотека - Steam</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #171a21;
+            --bg-secondary: #1b2838;
+            --bg-tertiary: #2a475e;
+            --accent: #66c0f4;
+            --text-primary: #c7d5e0;
+            --text-secondary: #8f98a0;
+            --border-color: rgba(255,255,255,0.1);
+            --card-bg: #16202d;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e8e8e8;
+            --accent: #1a9fff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: rgba(0,0,0,0.1);
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: "Motiva Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 14px;
+        }
+
+        .header {
+            background: #171a21;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 50px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #c7d5e0;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav a {
+            color: #c7d5e0;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 5px 10px;
+        }
+
+        .nav a.active {
+            color: #66c0f4;
+            border-bottom: 2px solid #66c0f4;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .library-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .library-title {
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 35px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 3px;
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .games-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .library-game {
+            display: flex;
+            gap: 20px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .library-game:hover {
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .game-image {
+            width: 200px;
+            height: 120px;
+            background: linear-gradient(135deg, #1b2838, #2a475e);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+
+        .game-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .game-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .game-meta {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .play-btn {
+            background: #5c7e10;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 13px;
+            text-transform: uppercase;
+            width: fit-content;
+            transition: all 0.2s;
+        }
+
+        .play-btn:hover {
+            background: #7ea64b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .library-game {
+                flex-direction: column;
+            }
+            
+            .game-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">STEAM</a>
+            <nav class="nav">
+                <a href="index.html">Магазин</a>
+                <a href="library.html" class="active">Библиотека</a>
+                <a href="community.html">Сообщество</a>
+                <a href="profile.html">Профиль</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="library-header">
+            <h1 class="library-title">Моя библиотека</h1>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Поиск по библиотеке...">
+            </div>
+        </div>
+
+        <div id="gamesContainer" class="games-list">
+            <!-- Заполняется через JS -->
+        </div>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <script>
+        let isDarkTheme = true;
+
+        function init() {
+            loadTheme();
+            loadLibrary();
+            
+            document.getElementById('searchInput').addEventListener('input', filterGames);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            isDarkTheme = savedTheme === 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+            document.querySelector('.theme-toggle').textContent = isDarkTheme ? '🌙' : '☀️';
+        }
+
+        function toggleTheme() {
+            isDarkTheme = !isDarkTheme;
+            const theme = isDarkTheme ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            document.querySelector('.theme-toggle').textContent = isDarkTheme ? '🌙' : '☀️';
+        }
+
+        function loadLibrary() {
+            const container = document.getElementById('gamesContainer');
+            const library = JSON.parse(localStorage.getItem('library') || '[]');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            if (!currentUser) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔒</div>
+                        <h2>Требуется вход</h2>
+                        <p>Войдите в профиль, чтобы увидеть свою библиотеку</p>
+                        <a href="profile.html" style="color: var(--accent); display: inline-block; margin-top: 15px;">Перейти к входу</a>
+                    </div>
+                `;
+                return;
+            }
+
+            if (library.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎮</div>
+                        <h2>Библиотека пуста</h2>
+                        <p>У вас пока нет игр. Перейдите в магазин, чтобы купить игры.</p>
+                        <a href="index.html" style="color: var(--accent); display: inline-block; margin-top: 15px;">Перейти в магазин</a>
+                    </div>
+                `;
+                return;
+            }
+
+            renderGames(library);
+        }
+
+        function renderGames(games) {
+            const container = document.getElementById('gamesContainer');
+            container.innerHTML = games.map(game => `
+                <div class="library-game" data-title="${game.title.toLowerCase()}">
+                    <div class="game-image">🎮</div>
+                    <div class="game-info">
+                        <div class="game-title">${game.title}</div>
+                        <div class="game-meta">Куплено: ${new Date(game.purchaseDate).toLocaleDateString()} | ${game.tags ? game.tags[0] : 'Игра'}</div>
+                        <button class="play-btn" onclick="playGame('${game.title}')">Играть</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterGames() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const games = document.querySelectorAll('.library-game');
+            
+            games.forEach(game => {
+                const title = game.getAttribute('data-title');
+                game.style.display = title.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        function playGame(title) {
+            alert(`Запускаем ${title}...`);
+        }
+
+        init();
+    </script>
+</body>
+</html>

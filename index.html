@@ -1,0 +1,1869 @@
+<!-- index.html - Главная страница (Магазин) -->
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Магазин Steam</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* Темная тема (по умолчанию) */
+        --bg-primary: #171a21;
+        --bg-secondary: #1b2838;
+        --bg-tertiary: #2a475e;
+        --bg-hover: #c6d4df;
+        --accent: #66c0f4;
+        --accent-hover: #1999ff;
+        --text-primary: #c7d5e0;
+        --text-secondary: #8f98a0;
+        --text-dark: #171a21;
+        --success: #a1cd44;
+        --danger: #ff6b6b;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --gradient-blue: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+        --card-bg: #16202d;
+        --header-bg: #171a21;
+      }
+
+      [data-theme="light"] {
+        /* Светлая тема - комфортная для глаз */
+        --bg-primary: #f5f5f5;
+        --bg-secondary: #ffffff;
+        --bg-tertiary: #e8e8e8;
+        --bg-hover: #d0d0d0;
+        --accent: #1a9fff;
+        --accent-hover: #0066cc;
+        --text-primary: #333333;
+        --text-secondary: #666666;
+        --text-dark: #171a21;
+        --success: #5a8f11;
+        --danger: #d44;
+        --border-color: rgba(0, 0, 0, 0.1);
+        --gradient-blue: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        --card-bg: #ffffff;
+        --header-bg: #2c3e50;
+      }
+
+      body {
+        font-family:
+          "Motiva Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        font-size: 14px;
+        line-height: 1.5;
+        transition:
+          background 0.3s,
+          color 0.3s;
+      }
+
+      /* Header */
+      .header {
+        background: var(--header-bg);
+        padding: 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .header-top {
+        padding: 0 20px;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 50px;
+      }
+
+      .logo-nav {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #1a44c2, #47bfff);
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .logo-icon::before {
+        content: "";
+        width: 16px;
+        height: 16px;
+        background: white;
+        border-radius: 50%;
+        position: absolute;
+        left: 4px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .logo-icon::after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 50%;
+        position: absolute;
+        right: 4px;
+        top: 30%;
+      }
+
+      .logo-text {
+        color: #c7d5e0;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      .nav {
+        display: flex;
+        gap: 0;
+      }
+
+      .nav a {
+        color: #c7d5e0;
+        text-decoration: none;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 0 15px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+        font-weight: 500;
+      }
+
+      .nav a:hover {
+        color: #ffffff;
+        border-bottom-color: #66c0f4;
+      }
+
+      .nav a.active {
+        color: #66c0f4;
+        border-bottom-color: #66c0f4;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .install-btn {
+        background: #5c7e10;
+        color: #d2efa9;
+        border: none;
+        padding: 6px 12px;
+        font-size: 11px;
+        text-transform: uppercase;
+        cursor: pointer;
+        border-radius: 2px;
+        font-weight: 600;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .install-btn:hover {
+        background: #7ea64b;
+        color: white;
+      }
+
+      .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #b8b6b4;
+        font-size: 12px;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 2px;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+
+      .user-menu:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #2a475e, #1b2838);
+        border-radius: 2px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        overflow: hidden;
+      }
+
+      .user-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Sub Header */
+      .sub-header {
+        background: rgba(103, 193, 245, 0.1);
+        padding: 0 20px;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .sub-header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 35px;
+      }
+
+      .sub-nav {
+        display: flex;
+        gap: 20px;
+      }
+
+      .sub-nav a {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: color 0.2s;
+      }
+
+      .sub-nav a:hover {
+        color: var(--text-primary);
+      }
+
+      .sub-nav a.active {
+        color: var(--text-primary);
+        font-weight: 600;
+        border-bottom: 2px solid var(--accent);
+      }
+
+      .search-box {
+        position: relative;
+        width: 250px;
+      }
+
+      .search-box input {
+        background: #316282;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        color: white;
+        padding: 5px 10px 5px 30px;
+        border-radius: 3px;
+        width: 100%;
+        font-size: 13px;
+        transition: all 0.2s;
+      }
+
+      .search-box input:focus {
+        background: white;
+        color: #171a21;
+        outline: none;
+        border-color: #66c0f4;
+      }
+
+      .search-box::before {
+        content: "🔍";
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+        opacity: 0.7;
+      }
+
+      .header-tools {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .cart-btn {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-color);
+        color: #c7d5e0;
+        padding: 5px 15px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+        position: relative;
+      }
+
+      .cart-btn:hover {
+        background: rgba(102, 192, 244, 0.2);
+        border-color: #66c0f4;
+        color: white;
+      }
+
+      .cart-count {
+        background: #ff6b6b;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: bold;
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        display: none;
+      }
+
+      .theme-toggle {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #8f98a0;
+        padding: 5px 10px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 11px;
+        text-transform: uppercase;
+        transition: all 0.2s;
+      }
+
+      .theme-toggle:hover {
+        border-color: #66c0f4;
+        color: #66c0f4;
+      }
+
+      /* Main Container */
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 15px;
+        padding: 15px;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        background: var(--bg-secondary);
+        border-radius: 3px;
+        padding: 15px;
+        border: 1px solid var(--border-color);
+      }
+
+      .sidebar-section {
+        margin-bottom: 25px;
+      }
+
+      .sidebar-title {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid var(--border-color);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .filter-list {
+        list-style: none;
+      }
+
+      .filter-list li {
+        padding: 6px 0;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 13px;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .filter-list li:hover {
+        color: var(--accent);
+        padding-left: 5px;
+      }
+
+      .filter-list li.active {
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      .filter-list li::before {
+        content: "►";
+        font-size: 8px;
+        opacity: 0;
+        transition: all 0.2s;
+        color: var(--accent);
+      }
+
+      .filter-list li:hover::before,
+      .filter-list li.active::before {
+        opacity: 1;
+      }
+
+      .friend-list {
+        list-style: none;
+      }
+
+      .friend-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 0;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .friend-item:hover {
+        background: var(--bg-hover);
+        margin: 0 -15px;
+        padding-left: 15px;
+        padding-right: 15px;
+        border-radius: 3px;
+      }
+
+      .friend-avatar {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #2a475e, #1b2838);
+        border-radius: 2px;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: #c7d5e0;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .friend-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .friend-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .friend-name {
+        font-size: 12px;
+        color: var(--text-primary);
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .friend-status-text {
+        font-size: 11px;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .friend-status {
+        width: 6px;
+        height: 6px;
+        background: #5c7e10;
+        border-radius: 50%;
+        box-shadow: 0 0 5px #5c7e10;
+        flex-shrink: 0;
+      }
+
+      .friend-status.away {
+        background: #b8860b;
+        box-shadow: 0 0 5px #b8860b;
+      }
+
+      /* Content */
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* Hero Section */
+      .hero {
+        background: var(--gradient-blue);
+        border-radius: 3px;
+        overflow: hidden;
+        position: relative;
+        min-height: 350px;
+        display: flex;
+        align-items: flex-end;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+      }
+
+      .hero-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.8;
+      }
+
+      .hero-bg::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.9) 0%,
+          rgba(0, 0, 0, 0.4) 50%,
+          rgba(0, 0, 0, 0.6) 100%
+        );
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 30px;
+        width: 100%;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        background: rgba(102, 192, 244, 0.2);
+        color: var(--accent);
+        padding: 4px 12px;
+        border-radius: 2px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+        border: 1px solid var(--accent);
+      }
+
+      .hero h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+        color: white;
+        font-weight: 600;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        letter-spacing: -0.5px;
+      }
+
+      .hero p {
+        font-size: 15px;
+        color: #c7d5e0;
+        margin-bottom: 20px;
+        max-width: 600px;
+        line-height: 1.6;
+      }
+
+      .hero-price {
+        font-size: 28px;
+        color: #c7d5e0;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .btn-primary {
+        background: linear-gradient(to right, #47bfff 5%, #1a44c2 60%);
+        border: none;
+        color: white;
+        padding: 12px 25px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(to right, #66c0f4 5%, #2a56d4 60%);
+        box-shadow: 0 0 15px rgba(102, 192, 244, 0.4);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 12px 25px;
+        font-size: 14px;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: white;
+      }
+
+      /* Section Header */
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .section-title {
+        font-size: 14px;
+        text-transform: uppercase;
+        color: var(--text-primary);
+        font-weight: 500;
+        letter-spacing: 1px;
+      }
+
+      .view-options {
+        display: flex;
+        gap: 5px;
+      }
+
+      .view-btn {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        padding: 5px 12px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 11px;
+        text-transform: uppercase;
+        transition: all 0.2s;
+      }
+
+      .view-btn:hover,
+      .view-btn.active {
+        background: rgba(102, 192, 244, 0.2);
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      /* Games Grid */
+      .games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 15px;
+      }
+
+      .game-card {
+        background: var(--card-bg);
+        border-radius: 3px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-color);
+      }
+
+      .game-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        z-index: 10;
+      }
+
+      .game-card.hidden {
+        display: none;
+      }
+
+      .game-image {
+        width: 100%;
+        height: 260px;
+        background: linear-gradient(135deg, #1b2838, #2a475e);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .game-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .game-card:hover .game-image img {
+        transform: scale(1.05);
+      }
+
+      .game-image::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          transparent 0%,
+          rgba(102, 192, 244, 0.1) 100%
+        );
+        pointer-events: none;
+      }
+
+      .game-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        transition: all 0.3s;
+        z-index: 2;
+      }
+
+      .game-card:hover .game-overlay {
+        opacity: 1;
+      }
+
+      .game-overlay h4 {
+        color: var(--accent);
+        margin-bottom: 10px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .game-overlay p {
+        font-size: 12px;
+        color: #8f98a0;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .game-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .tag {
+        background: rgba(102, 192, 244, 0.15);
+        color: var(--accent);
+        padding: 3px 8px;
+        border-radius: 2px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .game-info {
+        padding: 12px;
+        background: var(--card-bg);
+      }
+
+      .game-title {
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--text-primary);
+      }
+
+      .game-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+      }
+
+      .game-price-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+      }
+
+      .price {
+        font-size: 13px;
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      .price.free {
+        color: #5c7e10;
+      }
+
+      .add-to-cart {
+        background: rgba(102, 192, 244, 0.1);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 4px 12px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.2s;
+      }
+
+      .add-to-cart:hover {
+        background: var(--accent);
+        color: white;
+      }
+
+      /* Cart Modal */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.85);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        backdrop-filter: blur(3px);
+      }
+
+      .modal-overlay.active {
+        display: flex;
+      }
+
+      .modal {
+        background: var(--bg-secondary);
+        border-radius: 3px;
+        width: 90%;
+        max-width: 550px;
+        max-height: 80vh;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        border: 1px solid var(--border-color);
+      }
+
+      .modal-header {
+        background: var(--header-bg);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .modal-title {
+        font-size: 16px;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 20px;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 2px;
+        transition: all 0.2s;
+      }
+
+      .modal-close:hover {
+        background: var(--bg-hover);
+        color: var(--text-primary);
+      }
+
+      .modal-body {
+        padding: 20px;
+        max-height: 50vh;
+        overflow-y: auto;
+      }
+
+      .cart-item {
+        display: flex;
+        gap: 15px;
+        padding: 15px;
+        background: var(--card-bg);
+        border-radius: 3px;
+        margin-bottom: 10px;
+        align-items: center;
+        border: 1px solid var(--border-color);
+        transition: all 0.2s;
+      }
+
+      .cart-item:hover {
+        border-color: var(--accent);
+        background: var(--bg-tertiary);
+      }
+
+      .cart-item-image {
+        width: 70px;
+        height: 90px;
+        background: linear-gradient(135deg, #1b2838, #2a475e);
+        border-radius: 2px;
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .cart-item-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .cart-item-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .cart-item-title {
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: var(--text-primary);
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .cart-item-type {
+        font-size: 11px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+      }
+
+      .cart-item-price {
+        color: var(--text-primary);
+        font-size: 16px;
+        font-weight: 600;
+        margin-right: 15px;
+        white-space: nowrap;
+      }
+
+      .cart-item-remove {
+        background: transparent;
+        border: 1px solid var(--danger);
+        color: var(--danger);
+        padding: 5px 12px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 11px;
+        text-transform: uppercase;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+
+      .cart-item-remove:hover {
+        background: rgba(255, 107, 107, 0.1);
+      }
+
+      .cart-empty {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-secondary);
+      }
+
+      .cart-empty-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 15px;
+        background: var(--bg-tertiary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+
+      .modal-footer {
+        background: var(--header-bg);
+        padding: 20px;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .cart-total {
+        font-size: 20px;
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      .checkout-btn {
+        background: linear-gradient(to right, #47bfff 5%, #1a44c2 60%);
+        border: none;
+        color: white;
+        padding: 10px 25px;
+        font-size: 13px;
+        font-weight: 500;
+        border-radius: 2px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.2s;
+      }
+
+      .checkout-btn:hover {
+        background: linear-gradient(to right, #66c0f4 5%, #2a56d4 60%);
+        box-shadow: 0 0 15px rgba(102, 192, 244, 0.4);
+      }
+
+      .checkout-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      /* Toast Notification */
+      .toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--bg-secondary);
+        border-left: 3px solid var(--accent);
+        padding: 15px 20px;
+        border-radius: 3px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transform: translateX(400px);
+        transition: all 0.3s ease;
+        z-index: 3000;
+        border: 1px solid var(--border-color);
+        min-width: 250px;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+      }
+
+      .toast-icon {
+        width: 24px;
+        height: 24px;
+        background: rgba(102, 192, 244, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      .toast-content {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .toast-title {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .toast-message {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 2px;
+      }
+
+      /* Image Placeholder */
+      .img-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          135deg,
+          var(--bg-secondary) 0%,
+          var(--bg-tertiary) 100%
+        );
+        color: var(--accent);
+        font-size: 12px;
+        text-align: center;
+        padding: 10px;
+        flex-direction: column;
+      }
+
+      .img-placeholder::before {
+        content: "🎮";
+        font-size: 24px;
+        margin-bottom: 5px;
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 968px) {
+        .main-container {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 15px;
+        }
+
+        .hero h1 {
+          font-size: 28px;
+        }
+
+        .nav {
+          display: none;
+        }
+
+        .sub-nav {
+          display: none;
+        }
+
+        .search-box {
+          width: 150px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .header-content {
+          flex-wrap: wrap;
+          height: auto;
+          padding: 10px 0;
+        }
+
+        .logo-nav {
+          width: 100%;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        }
+
+        .header-actions {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .hero {
+          min-height: 300px;
+        }
+
+        .hero h1 {
+          font-size: 22px;
+        }
+
+        .hero p {
+          font-size: 13px;
+        }
+
+        .games-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        }
+
+        .game-image {
+          height: 200px;
+        }
+
+        .sidebar {
+          grid-template-columns: 1fr;
+        }
+
+        .modal {
+          width: 95%;
+          margin: 10px;
+        }
+
+        .cart-item {
+          flex-wrap: wrap;
+        }
+
+        .cart-item-price {
+          width: 100%;
+          text-align: right;
+          margin: 10px 0 0 0;
+        }
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--bg-primary);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--bg-tertiary);
+        border-radius: 0;
+        border: 2px solid var(--bg-primary);
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div class="header-content">
+          <div class="logo-nav">
+            <a href="index.html" class="logo">
+              <div class="logo-icon"></div>
+              <span class="logo-text">STEAM</span>
+            </a>
+            <nav class="nav">
+              <a href="index.html" class="active">Магазин</a>
+              <a href="library.html">Библиотека</a>
+              <a href="community.html">Сообщество</a>
+              <a href="profile.html">Профиль</a>
+            </nav>
+          </div>
+          <div class="header-actions">
+            <div class="store-switch" style="display: flex; background: rgba(0,0,0,0.3); border-radius: 3px; padding: 3px; margin-right: 10px;">
+              <a href="index.html" style="padding: 6px 15px; border-radius: 2px; font-size: 12px; text-transform: uppercase; text-decoration: none; background: #66c0f4; color: white;">Игры</a>
+              <a href="merch.html" style="padding: 6px 15px; border-radius: 2px; font-size: 12px; text-transform: uppercase; text-decoration: none; color: #8f98a0;">Мерч</a>
+            </div>
+            <a
+              href="https://store.steampowered.com/about/"
+              target="_blank"
+              class="install-btn"
+              >Установить Steam</a
+            >
+            <a href="profile.html" class="user-menu" id="userMenu">
+              <div class="user-avatar" id="headerAvatar">
+                <div class="img-placeholder" style="font-size: 8px">?</div>
+              </div>
+              <span id="headerUsername">Войти</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="sub-header">
+        <div class="sub-header-content">
+          <nav class="sub-nav">
+            <a href="index.html" class="active">Ваш магазин</a>
+            <a href="new.html">Новое и интересное</a>
+            <a href="categories.html">Категории</a>
+            <a href="points.html">Пункты магазина</a>
+            <a href="news.html">Новости</a>
+            <a href="labs.html">Лаборатории</a>
+          <a href="merch.html">Мерч</a>
+            </nav>
+          <div class="header-tools">
+            <div class="search-box">
+              <input type="text" id="searchInput" placeholder="поиск" />
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+            <button class="cart-btn" id="cartBtn">
+              🛒 Корзина
+              <span class="cart-count" id="cartCount">0</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Категории</h3>
+          <ul class="filter-list" id="categoryFilters">
+            <li class="active" data-category="all">Все игры</li>
+            <li data-category="action">Экшен</li>
+            <li data-category="rpg">РПГ</li>
+            <li data-category="strategy">Стратегии</li>
+            <li data-category="adventure">Приключения</li>
+            <li data-category="simulation">Симуляторы</li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Друзья онлайн</h3>
+          <ul class="friend-list" id="friendList">
+            <!-- Заполняется через JS -->
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <main class="content">
+        <!-- Hero Section -->
+        <section class="hero">
+          <div class="hero-bg">
+            <div class="img-placeholder" style="height: 100%">
+              <br />
+              <img
+                src="images/Cyberpunk 2077 Phantom Liberty.png"
+                
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="hero-content">
+            <span class="hero-badge">Игра недели</span>
+            <h1>Cyberpunk 2077: Phantom Liberty</h1>
+            <p>
+              Вернитесь в Найт-Сити для нового шпионского триллера. Заключите
+              союз с неуловимой агенткой Сонгбёрд и разгадайте заговор,
+              угрожающий самим основам власти.
+            </p>
+            <div class="hero-price">2 999 pуб.</div>
+            <div class="hero-buttons">
+              <button class="btn-primary" onclick="addToCart(0)">
+                В корзину
+              </button>
+              <button class="btn-secondary">В список желаемого</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Games Grid -->
+        <section>
+          <div class="section-header">
+            <h2 class="section-title">Популярное и рекомендуемое</h2>
+            <div class="view-options">
+              <button class="view-btn active">Сетка</button>
+              <button class="view-btn">Список</button>
+            </div>
+          </div>
+          <div class="games-grid" id="gamesGrid"></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal-overlay" id="cartModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="modal-title">Ваша корзина</h2>
+          <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body" id="cartItems"></div>
+        <div class="modal-footer">
+          <div class="cart-total" id="cartTotal">Итого: 0 pуб.</div>
+          <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">
+            Оформить покупку
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+      <div class="toast-icon">✓</div>
+      <div class="toast-content">
+        <div class="toast-title">Успешно</div>
+        <div class="toast-message" id="toastMessage">
+          Товар добавлен в корзину
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Game Data
+      const games = [
+        {
+          id: 1,
+          title: "Baldur's Gate 3",
+          price: 2499,
+          category: "rpg",
+          tags: ["RPG", "Пошаговая", "Кооператив"],
+          description:
+            "Эпическая RPG от третьего лица с пошаговыми боями в мире Dungeons & Dragons.",
+          image: "images/Baldur's Gate 3.jpg",
+        },
+        {
+          id: 2,
+          title: "Counter-Strike 2",
+          price: 0,
+          category: "action",
+          tags: ["Шутер", "Мультиплеер", "Соревновательная"],
+          description:
+            "Легендарный тактический шутер от первого лица, перестроенный на движке Source 2.",
+          image: "images/CS2.jpg",
+        },
+        {
+          id: 3,
+          title: "Dota 2",
+          price: 0,
+          category: "strategy",
+          tags: ["MOBA", "Соревновательная", "Командная"],
+          description:
+            "Самая популярная MOBA в мире с глубокой механикой и бесконечной переигровкой.",
+          image: "images/Dota2.jpg",
+        },
+        {
+          id: 4,
+          title: "Elden Ring",
+          price: 2999,
+          category: "rpg",
+          tags: ["Souls-like", "Открытый мир", "Сложная"],
+          description:
+            "Фэнтезийная RPG в открытом мире от создателей Dark Souls и Джорджа Мартина.",
+          image: "images/Elden Ring.jpg",
+        },
+        {
+          id: 5,
+          title: "Civilization VI",
+          price: 1499,
+          category: "strategy",
+          tags: ["Пошаговая", "Стратегия", "История"],
+          description:
+            "Постройте империю, которая выдержит испытание временем в этой пошаговой стратегии.",
+          image: "images/Civilization VI.png",
+        },
+        {
+          id: 6,
+          title: "The Witcher 3",
+          price: 999,
+          category: "rpg",
+          tags: ["RPG", "Открытый мир", "Сюжет"],
+          description:
+            "Геральт из Ривии охотится на Дикую Охоту в масштабном фэнтезийном мире.",
+          image: "images/witcher3.jpg",
+        },
+        {
+          id: 7,
+          title: "Grand Theft Auto V",
+          price: 1999,
+          category: "action",
+          tags: ["Экшен", "Открытый мир", "Криминал"],
+          description:
+            "Культовая игра в открытом мире с тремя протагонистами и режимом GTA Online.",
+          image: "images/gta5.jpg",
+        },
+        {
+          id: 8,
+          title: "Red Dead Redemption 2",
+          price: 2499,
+          category: "adventure",
+          tags: ["Приключение", "Вестерн", "Открытый мир"],
+          description:
+            "Эпическая история о банде Ван дер Линде на закате Дикого Запада.",
+          image: "images/Red Dead Redemption 2.jpg",
+        },
+        {
+          id: 9,
+          title: "Stardew Valley",
+          price: 349,
+          category: "simulation",
+          tags: ["Симулятор", "Ферма", "Расслабляющая"],
+          description:
+            "Унаследуйте старый фермерский участок и постройте новую жизнь в деревне.",
+          image: "images/Stardew Valley.jpeg",
+        },
+        {
+          id: 10,
+          title: "Hades",
+          price: 699,
+          category: "action",
+          tags: ["Рогалик", "Экшен", "Мифология"],
+          description:
+            "Побег из ада в этом динамичном рогалике с захватывающим сюжетом.",
+          image: "images/Hades.jpg",
+        },
+        {
+          id: 11,
+          title: "Hollow Knight",
+          price: 249,
+          category: "adventure",
+          tags: ["Метроидвания", "Сложная", "2D"],
+          description:
+            "Исследуйте огромный подземный мир полный насекомых и тайн.",
+          image: "images/hollow knight.png",
+        },
+        {
+          id: 12,
+          title: "Cities: Skylines II",
+          price: 3999,
+          category: "simulation",
+          tags: ["Градостроитель", "Симулятор", "Стратегия"],
+          description:
+            "Создайте город своей мечты в самом реалистичном градостроительном симуляторе.",
+          image: "images/Cities Skylines I.jpg",
+        },
+      ];
+
+      const heroGame = {
+        id: 0,
+        title: "Cyberpunk 2077: Phantom Liberty",
+        price: 2999,
+        image: "images/cyberpunk.jpg",
+      };
+
+      const friends = [
+        {
+          name: "AlexKiller",
+          status: "В игре: CS2",
+          online: true,
+          avatar: null,
+        },
+        { name: "MegaMind", status: "В сети", online: true, avatar: null },
+        { name: "SkyRunner", status: "Не в сети", online: false, avatar: null },
+        {
+          name: "NightRaider",
+          status: "В игре: Dota 2",
+          online: true,
+          avatar: null,
+        },
+      ];
+
+      // State
+      let cart = [];
+      let currentCategory = "all";
+      let isDarkTheme = true;
+      let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+
+      // DOM Elements
+      const gamesGrid = document.getElementById("gamesGrid");
+      const searchInput = document.getElementById("searchInput");
+      const cartBtn = document.getElementById("cartBtn");
+      const cartModal = document.getElementById("cartModal");
+      const closeModal = document.getElementById("closeModal");
+      const cartItems = document.getElementById("cartItems");
+      const cartTotal = document.getElementById("cartTotal");
+      const cartCount = document.getElementById("cartCount");
+      const themeToggle = document.getElementById("themeToggle");
+      const categoryFilters = document.getElementById("categoryFilters");
+      const headerUsername = document.getElementById("headerUsername");
+      const headerAvatar = document.getElementById("headerAvatar");
+      const friendList = document.getElementById("friendList");
+
+      // Initialize
+      function init() {
+        updateUserUI();
+        renderGames();
+        renderFriends();
+        setupEventListeners();
+        loadTheme();
+      }
+
+      // Update User UI
+      function updateUserUI() {
+        if (currentUser) {
+          headerUsername.textContent = currentUser.username;
+          headerAvatar.innerHTML = currentUser.avatar
+            ? `<img src="${currentUser.avatar}" alt="${currentUser.username}">`
+            : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #2a475e, #1b2838);color:white;font-size:14px;">${currentUser.username[0].toUpperCase()}</div>`;
+        } else {
+          headerUsername.textContent = "Войти";
+          headerAvatar.innerHTML =
+            '<div class="img-placeholder" style="font-size: 8px;">?</div>';
+        }
+      }
+
+      // Render Friends
+      function renderFriends() {
+        friendList.innerHTML = friends
+          .map(
+            (friend) => `
+                <li class="friend-item">
+                    <div class="friend-avatar">
+                        ${friend.avatar ? `<img src="${friend.avatar}" alt="${friend.name}">` : friend.name.substring(0, 2).toUpperCase()}
+                    </div>
+                    <div class="friend-info">
+                        <div class="friend-name">${friend.name}</div>
+                        <div class="friend-status-text">${friend.status}</div>
+                    </div>
+                    <div class="friend-status ${friend.online ? "" : "away"}"></div>
+                </li>
+            `,
+          )
+          .join("");
+      }
+
+      // Render Games
+      function renderGames() {
+        gamesGrid.innerHTML = "";
+
+        const filteredGames = games.filter((game) => {
+          const matchesCategory =
+            currentCategory === "all" || game.category === currentCategory;
+          const matchesSearch = game.title
+            .toLowerCase()
+            .includes(searchInput.value.toLowerCase());
+          return matchesCategory && matchesSearch;
+        });
+
+        filteredGames.forEach((game) => {
+          const card = createGameCard(game);
+          gamesGrid.appendChild(card);
+        });
+      }
+
+      // Create Game Card
+      function createGameCard(game) {
+        const card = document.createElement("a");
+        card.className = "game-card";
+        card.dataset.category = game.category;
+        card.href = `game-${game.id}.html`;
+        card.style.textDecoration = "none";
+        card.style.color = "inherit";
+
+        const isFree = game.price === 0;
+        const priceDisplay = isFree
+          ? "Бесплатно"
+          : `${game.price.toLocaleString()} pуб.`;
+
+        const imageHtml = game.image
+          ? `<img src="${game.image}" alt="${game.title}" loading="lazy">`
+          : `<div class="img-placeholder">${game.title}<br>220×260</div>`;
+
+        card.innerHTML = `
+                <div class="game-image">
+                    ${imageHtml}
+                    <div class="game-overlay">
+                        <h4>${game.title}</h4>
+                        <p>${game.description}</p>
+                        <div class="game-tags">
+                            ${game.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="game-title">${game.title}</div>
+                    <div class="game-meta">
+                        <span>${game.tags[0]}</span>
+                        <span>★★★★★</span>
+                    </div>
+                    <div class="game-price-row">
+                        <span class="price ${isFree ? "free" : ""}">${priceDisplay}</span>
+                        <span class="add-to-cart" onclick="event.preventDefault(); addToCart(${game.id})">
+                            ${isFree ? "Играть" : "В корзину"}
+                        </span>
+                    </div>
+                </div>
+            `;
+
+        return card;
+      }
+
+      // Add to Cart
+      function addToCart(gameId) {
+        if (!currentUser) {
+          showToast("Сначала войдите в профиль", "!");
+          setTimeout(() => (window.location.href = "profile.html"), 1500);
+          return;
+        }
+
+        let game = gameId === 0 ? heroGame : games.find((g) => g.id === gameId);
+        if (!game) return;
+
+        if (cart.find((item) => item.id === gameId)) {
+          showToast("Товар уже в корзине", "!");
+          return;
+        }
+
+        cart.push(game);
+        updateCart();
+        showToast(`${game.title} добавлен в корзину`);
+
+        cartBtn.style.transform = "scale(1.1)";
+        setTimeout(() => (cartBtn.style.transform = "scale(1)"), 200);
+      }
+
+      // Remove from Cart
+      function removeFromCart(gameId) {
+        cart = cart.filter((item) => item.id !== gameId);
+        updateCart();
+        showToast("Товар удален из корзины", "×");
+      }
+
+      // Update Cart UI
+      function updateCart() {
+        cartCount.textContent = cart.length;
+        cartCount.style.display = cart.length > 0 ? "flex" : "none";
+
+        if (cart.length === 0) {
+          cartItems.innerHTML = `
+                    <div class="cart-empty">
+                        <div class="cart-empty-icon">🛒</div>
+                        <div>Ваша корзина пуста</div>
+                        <div style="font-size: 12px; margin-top: 10px; opacity: 0.7;">Добавьте игры из магазина</div>
+                    </div>
+                `;
+        } else {
+          cartItems.innerHTML = cart
+            .map((item) => {
+              const imageHtml = item.image
+                ? `<img src="${item.image}" alt="${item.title}">`
+                : `<div class="img-placeholder" style="font-size: 10px;">${item.title}</div>`;
+
+              return `
+                        <div class="cart-item">
+                            <div class="cart-item-image">${imageHtml}</div>
+                            <div class="cart-item-info">
+                                <div class="cart-item-title">${item.title}</div>
+                                <div class="cart-item-type">Steam</div>
+                            </div>
+                            <div class="cart-item-price">${item.price === 0 ? "Бесплатно" : item.price.toLocaleString() + " pуб."}</div>
+                            <button class="cart-item-remove" onclick="removeFromCart(${item.id})">Удалить</button>
+                        </div>
+                    `;
+            })
+            .join("");
+        }
+
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        cartTotal.textContent = `Итого: ${total.toLocaleString()} pуб.`;
+        document.getElementById("checkoutBtn").disabled = cart.length === 0;
+      }
+
+      // Checkout
+      function checkout() {
+        if (!currentUser) {
+          showToast("Сначала войдите в профиль", "!");
+          return;
+        }
+        if (cart.length === 0) return;
+
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        showToast(`Покупка оформлена на ${total.toLocaleString()} pуб.`, "$");
+
+        // Add to library
+        let library = JSON.parse(localStorage.getItem("library") || "[]");
+        cart.forEach((game) => {
+          if (!library.find((g) => g.id === game.id)) {
+            library.push({ ...game, purchaseDate: new Date().toISOString() });
+          }
+        });
+        localStorage.setItem("library", JSON.stringify(library));
+
+        cart = [];
+        updateCart();
+        setTimeout(() => cartModal.classList.remove("active"), 1000);
+      }
+
+      // Show Toast
+      function showToast(message, icon = "✓") {
+        const toast = document.getElementById("toast");
+        document.querySelector(".toast-icon").textContent = icon;
+        document.getElementById("toastMessage").textContent = message;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3000);
+      }
+
+      // Theme Toggle
+      function toggleTheme() {
+        isDarkTheme = !isDarkTheme;
+        document.body.setAttribute(
+          "data-theme",
+          isDarkTheme ? "dark" : "light",
+        );
+        themeToggle.textContent = isDarkTheme ? "🌙" : "☀️";
+        localStorage.setItem("theme", isDarkTheme ? "dark" : "light");
+      }
+
+      function loadTheme() {
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        isDarkTheme = savedTheme === "dark";
+        document.body.setAttribute("data-theme", savedTheme);
+        themeToggle.textContent = isDarkTheme ? "🌙" : "☀️";
+      }
+
+      // Setup Event Listeners
+      function setupEventListeners() {
+        searchInput.addEventListener("input", renderGames);
+
+        categoryFilters.addEventListener("click", (e) => {
+          if (e.target.tagName === "LI") {
+            document
+              .querySelectorAll(".filter-list li")
+              .forEach((li) => li.classList.remove("active"));
+            e.target.classList.add("active");
+            currentCategory = e.target.dataset.category;
+            renderGames();
+          }
+        });
+
+        cartBtn.addEventListener("click", () =>
+          cartModal.classList.add("active"),
+        );
+        closeModal.addEventListener("click", () =>
+          cartModal.classList.remove("active"),
+        );
+        cartModal.addEventListener("click", (e) => {
+          if (e.target === cartModal) cartModal.classList.remove("active");
+        });
+
+        themeToggle.addEventListener("click", toggleTheme);
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") cartModal.classList.remove("active");
+        });
+      }
+
+      // Start
+      init();
+    </script>
+  </body>
+</html>

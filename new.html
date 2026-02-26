@@ -1,0 +1,310 @@
+<!-- new.html - Новое и интересное -->
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Новое и интересное - Steam</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --bg-primary: #171a21;
+        --bg-secondary: #1b2838;
+        --accent: #66c0f4;
+        --text-primary: #c7d5e0;
+        --text-secondary: #8f98a0;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --card-bg: #16202d;
+      }
+      [data-theme="light"] {
+        --bg-primary: #f5f5f5;
+        --bg-secondary: #ffffff;
+        --accent: #1a9fff;
+        --text-primary: #333333;
+        --text-secondary: #666666;
+        --border-color: rgba(0, 0, 0, 0.1);
+        --card-bg: #ffffff;
+      }
+      body {
+        font-family: "Motiva Sans", Helvetica, Arial, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+      }
+      .header {
+        background: #171a21;
+        padding: 0 20px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 50px;
+      }
+      .logo {
+        color: #c7d5e0;
+        text-decoration: none;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .nav {
+        display: flex;
+        gap: 20px;
+      }
+      .nav a {
+        color: #c7d5e0;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 13px;
+        padding: 5px 10px;
+      }
+      .nav a.active {
+        color: #66c0f4;
+        border-bottom: 2px solid #66c0f4;
+      }
+      .main-container {
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+      }
+      .page-title {
+        font-size: 24px;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .new-section {
+        margin-bottom: 40px;
+      }
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .section-title {
+        font-size: 18px;
+        color: var(--accent);
+      }
+      .games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+      .game-card {
+        background: var(--card-bg);
+        border-radius: 3px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        transition: all 0.2s;
+      }
+      .game-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+      }
+      .game-image {
+        width: 100%;
+        height: 150px;
+        background: linear-gradient(135deg, #1b2838, #2a475e);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+      }
+      .game-info {
+        padding: 15px;
+      }
+      .game-title {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+      .game-date {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+      }
+      .game-price {
+        color: var(--accent);
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .tag {
+        display: inline-block;
+        background: rgba(102, 192, 244, 0.2);
+        color: var(--accent);
+        padding: 3px 8px;
+        border-radius: 2px;
+        font-size: 11px;
+        margin-right: 5px;
+      }
+      .theme-toggle {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        z-index: 100;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <a href="index.html" class="logo">STEAM</a>
+        <nav class="nav">
+          <a href="index.html">Магазин</a>
+          <a href="library.html">Библиотека</a>
+          <a href="community.html">Сообщество</a>
+          <a href="profile.html">Профиль</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="main-container">
+      <h1 class="page-title">Новое и интересное</h1>
+
+      <div class="new-section">
+        <div class="section-header">
+          <h2 class="section-title">🔥 Популярные новинки</h2>
+          <a href="#" style="color: var(--accent)">Смотреть все</a>
+        </div>
+        <div class="games-grid">
+          <div class="game-card">
+            <div class="game-image">
+              <img
+                src="images/Starfield 370.png"
+                style="width: 370px; height: 150px"
+                alt=""
+              />
+            </div>
+            <div class="game-info">
+              <div class="game-title">Starfield</div>
+              <div class="game-date">Вышла: 6 сентября 2023</div>
+              <div style="margin-bottom: 10px">
+                <span class="tag">RPG</span><span class="tag">Космос</span>
+              </div>
+              <div class="game-price">3 499 pуб.</div>
+            </div>
+          </div>
+          <div class="game-card">
+            <div class="game-image">
+              <img
+                src="images/b3aldur's gate 370.png"
+                style="width: 370px; height: 150px"
+                alt=""
+              />
+            </div>
+            <div class="game-info">
+              <div class="game-title">Baldur's Gate 3</div>
+              <div class="game-date">Вышла: 3 августа 2023</div>
+              <div style="margin-bottom: 10px">
+                <span class="tag">RPG</span><span class="tag">D&D</span>
+              </div>
+              <div class="game-price">2 499 pуб.</div>
+            </div>
+          </div>
+          <div class="game-card">
+            <div class="game-image">
+              <img
+                src="images/Armored Core VI 370.png"
+                style="width: 370px; height: 150px"
+                alt=""
+              />
+            </div>
+            <div class="game-info">
+              <div class="game-title">Armored Core VI</div>
+              <div class="game-date">Вышла: 25 августа 2023</div>
+              <div style="margin-bottom: 10px">
+                <span class="tag">Экшен</span><span class="tag">Меха</span>
+              </div>
+              <div class="game-price">2 999 pуб.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="new-section">
+        <div class="section-header">
+          <h2 class="section-title">📅 Скоро выйдут</h2>
+        </div>
+        <div class="games-grid">
+          <div class="game-card">
+            <div class="game-image">
+              <img
+                src="images/Hollow_Knight_Progression-370.jpg"
+                style="width: 370px; height: 150px"
+                alt=""
+              />
+            </div>
+            <div class="game-info">
+              <div class="game-title">Hollow Knight: Silksong</div>
+              <div class="game-date">Ожидается: TBA 2024</div>
+              <div style="margin-bottom: 10px">
+                <span class="tag">Метроидвания</span>
+              </div>
+              <div class="game-price">Цена неизвестна</div>
+            </div>
+          </div>
+          <div class="game-card">
+            <div class="game-image">
+              <img
+                src="images/GTA VI 370.jpg"
+                style="width: 370px; height: 150px"
+                alt=""
+              />
+            </div>
+            <div class="game-info">
+              <div class="game-title">GTA VI</div>
+              <div class="game-date">Ожидается: 2025</div>
+              <div style="margin-bottom: 10px">
+                <span class="tag">Экшен</span
+                ><span class="tag">Открытый мир</span>
+              </div>
+              <div class="game-price">Цена неизвестна</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <script>
+      let isDarkTheme = true;
+      function loadTheme() {
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        isDarkTheme = savedTheme === "dark";
+        document.body.setAttribute("data-theme", savedTheme);
+        document.querySelector(".theme-toggle").textContent = isDarkTheme
+          ? "🌙"
+          : "☀️";
+      }
+      function toggleTheme() {
+        isDarkTheme = !isDarkTheme;
+        const theme = isDarkTheme ? "dark" : "light";
+        document.body.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+        document.querySelector(".theme-toggle").textContent = isDarkTheme
+          ? "🌙"
+          : "☀️";
+      }
+      loadTheme();
+    </script>
+  </body>
+</html>

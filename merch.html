@@ -1,0 +1,1854 @@
+<!-- merch.html - Мерч и коллекционные наборы -->
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мерч и коллекционные наборы - Steam</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --bg-primary: #171a21;
+        --bg-secondary: #1b2838;
+        --bg-tertiary: #2a475e;
+        --accent: #66c0f4;
+        --accent-hover: #1999ff;
+        --text-primary: #c7d5e0;
+        --text-secondary: #8f98a0;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --card-bg: #16202d;
+        --success: #a1cd44;
+        --danger: #ff6b6b;
+        --gold: #ffd700;
+        --warning: #ff9800;
+      }
+      [data-theme="light"] {
+        --bg-primary: #f5f5f5;
+        --bg-secondary: #ffffff;
+        --bg-tertiary: #e8e8e8;
+        --accent: #1a9fff;
+        --accent-hover: #0066cc;
+        --text-primary: #333333;
+        --text-secondary: #666666;
+        --border-color: rgba(0, 0, 0, 0.1);
+        --card-bg: #ffffff;
+        --success: #5a8f11;
+        --danger: #d44;
+      }
+      body {
+        font-family:
+          "Motiva Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        font-size: 14px;
+      }
+      .header {
+        background: #171a21;
+        padding: 0 20px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 50px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: #c7d5e0;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .nav {
+        display: flex;
+        gap: 0;
+      }
+      .nav a {
+        color: #c7d5e0;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 1px;
+        padding: 0 15px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+      }
+      .nav a:hover {
+        color: #ffffff;
+        border-bottom-color: #66c0f4;
+      }
+      .nav a.active {
+        color: #66c0f4;
+        border-bottom-color: #66c0f4;
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .cart-btn {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-color);
+        color: #c7d5e0;
+        padding: 5px 15px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+        position: relative;
+        text-decoration: none;
+      }
+      .cart-btn:hover {
+        background: rgba(102, 192, 244, 0.2);
+        border-color: #66c0f4;
+        color: white;
+      }
+      .cart-count {
+        background: #ff6b6b;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: bold;
+        position: absolute;
+        top: -8px;
+        right: -8px;
+      }
+      .cart-count.active {
+        display: flex;
+      }
+      .store-switch {
+        display: flex;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 3px;
+        padding: 3px;
+      }
+      .store-switch a {
+        padding: 6px 15px;
+        border-radius: 2px;
+        font-size: 12px;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.2s;
+      }
+      .store-switch a:hover {
+        color: var(--text-primary);
+      }
+      .store-switch a.active {
+        background: var(--accent);
+        color: white;
+      }
+      .sub-header {
+        background: rgba(103, 193, 245, 0.1);
+        padding: 0 20px;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .sub-header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 45px;
+      }
+      .sub-nav {
+        display: flex;
+        gap: 25px;
+      }
+      .sub-nav a {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: color 0.2s;
+        padding: 5px 0;
+      }
+      .sub-nav a:hover {
+        color: var(--text-primary);
+      }
+      .sub-nav a.active {
+        color: var(--text-primary);
+        font-weight: 600;
+        border-bottom: 2px solid var(--accent);
+      }
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .page-header {
+        margin-bottom: 30px;
+      }
+      .page-title {
+        font-size: 28px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        color: var(--text-primary);
+      }
+      .page-subtitle {
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+      .hero-banner {
+        background: linear-gradient(135deg, #2a475e 0%, #1b2838 100%);
+        border-radius: 3px;
+        padding: 40px;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+      }
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+      .hero-badge {
+        display: inline-block;
+        background: rgba(255, 215, 0, 0.2);
+        color: var(--gold);
+        padding: 4px 12px;
+        border-radius: 2px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+        border: 1px solid var(--gold);
+      }
+      .hero-title {
+        font-size: 32px;
+        margin-bottom: 15px;
+        color: white;
+      }
+      .hero-description {
+        font-size: 15px;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin-bottom: 25px;
+        line-height: 1.6;
+      }
+      .hero-btn {
+        background: linear-gradient(to right, #47bfff 5%, #1a44c2 60%);
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .hero-btn:hover {
+        background: linear-gradient(to right, #66c0f4 5%, #2a56d4 60%);
+        box-shadow: 0 0 15px rgba(102, 192, 244, 0.4);
+      }
+      .section {
+        margin-bottom: 40px;
+      }
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .section-title {
+        font-size: 18px;
+        text-transform: uppercase;
+        color: var(--text-primary);
+        font-weight: 500;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .section-icon {
+        font-size: 24px;
+      }
+      .view-all {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 12px;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .view-all:hover {
+        color: var(--accent-hover);
+      }
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+      }
+      .product-card {
+        background: var(--card-bg);
+        border-radius: 3px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 1px solid var(--border-color);
+        position: relative;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        border-color: var(--accent);
+      }
+      .product-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 4px 10px;
+        border-radius: 2px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        z-index: 2;
+      }
+      .badge-limited {
+        background: linear-gradient(135deg, #ffd700, #ffaa00);
+        color: #000;
+      }
+      .badge-new {
+        background: linear-gradient(135deg, #66c0f4, #1a44c2);
+        color: white;
+      }
+      .badge-sale {
+        background: linear-gradient(135deg, #ff6b6b, #d44);
+        color: white;
+      }
+      .badge-rare {
+        background: linear-gradient(135deg, #9c27b0, #673ab7);
+        color: white;
+      }
+
+      .product-image {
+        width: 100%;
+        height: 220px;
+        background: linear-gradient(135deg, #1b2838, #2a475e);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .product-info {
+        padding: 15px;
+      }
+      .product-category {
+        font-size: 11px;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 5px;
+      }
+      .product-title {
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+        line-height: 1.4;
+      }
+      .product-description {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .product-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 12px;
+        border-top: 1px solid var(--border-color);
+      }
+      .product-price {
+        display: flex;
+        flex-direction: column;
+      }
+      .price-original {
+        font-size: 12px;
+        color: var(--text-secondary);
+        text-decoration: line-through;
+      }
+      .price-current {
+        font-size: 18px;
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+      .price-current.sale {
+        color: var(--success);
+      }
+      .add-to-cart-btn {
+        background: rgba(102, 192, 244, 0.1);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 8px 16px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.2s;
+      }
+      .add-to-cart-btn:hover {
+        background: var(--accent);
+        color: white;
+      }
+      .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+      }
+      .category-card {
+        background: var(--card-bg);
+        border-radius: 3px;
+        padding: 25px;
+        text-align: center;
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        color: var(--text-primary);
+      }
+      .category-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+      .category-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+      }
+      .category-name {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--accent);
+      }
+      .category-count {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 5px;
+      }
+      .featured-collection {
+        background: var(--card-bg);
+        border-radius: 3px;
+        padding: 30px;
+        border: 1px solid var(--border-color);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        align-items: center;
+      }
+      .collection-image {
+        background: linear-gradient(135deg, #1b2838, #2a475e);
+        border-radius: 3px;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 120px;
+      }
+      .collection-content h3 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: var(--text-primary);
+      }
+      .collection-content p {
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+      .collection-features {
+        list-style: none;
+        margin-bottom: 25px;
+      }
+      .collection-features li {
+        padding: 8px 0;
+        font-size: 13px;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .collection-features li::before {
+        content: "✓";
+        color: var(--success);
+        font-weight: bold;
+      }
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.85);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        backdrop-filter: blur(3px);
+      }
+      .modal-overlay.active {
+        display: flex;
+      }
+      .modal {
+        background: var(--bg-secondary);
+        border-radius: 3px;
+        width: 90%;
+        max-width: 550px;
+        max-height: 80vh;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        border: 1px solid var(--border-color);
+      }
+      .modal-header {
+        background: #171a21;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .modal-title {
+        font-size: 16px;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+      .modal-close {
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 24px;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      .modal-close:hover {
+        color: var(--text-primary);
+      }
+      .modal-body {
+        padding: 20px;
+        max-height: 50vh;
+        overflow-y: auto;
+      }
+      .product-img {
+        width: 350px;
+        height: 220px;
+        object-fit: cover; /* Суретті созбай, берілген өлшемге лайықтап кеседі */
+        object-position: center; /* Суреттің ортасын көрсетеді */
+        border-radius: 4px 4px 0 0; /* Үстіңгі бұрыштарын сәл дөңгелету (дизайнға сай) */
+        display: block;
+        margin: 0 auto; /* Ортаға қою */
+      }
+      .cart-item {
+        display: flex;
+        gap: 15px;
+        padding: 15px;
+        background: var(--card-bg);
+        border-radius: 3px;
+        margin-bottom: 10px;
+        align-items: center;
+        border: 1px solid var(--border-color);
+      }
+      .cart-item-image {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #1b2838, #2a475e);
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        flex-shrink: 0;
+      }
+      .cart-item-info {
+        flex: 1;
+      }
+      .cart-item-title {
+        font-weight: 500;
+        margin-bottom: 3px;
+        color: var(--text-primary);
+        font-size: 14px;
+      }
+      .cart-item-type {
+        font-size: 11px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+      }
+      .cart-item-price {
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .cart-item-remove {
+        background: none;
+        border: none;
+        color: var(--danger);
+        cursor: pointer;
+        font-size: 18px;
+        padding: 5px;
+        transition: transform 0.2s;
+      }
+      .cart-item-remove:hover {
+        transform: scale(1.2);
+      }
+      .cart-empty {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-secondary);
+      }
+      .cart-empty-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+      }
+      .modal-footer {
+        padding: 20px;
+        background: var(--card-bg);
+        border-top: 1px solid var(--border-color);
+      }
+      .cart-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 16px;
+      }
+      .cart-total-price {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      .checkout-btn {
+        width: 100%;
+        background: linear-gradient(to right, #47bfff 5%, #1a44c2 60%);
+        border: none;
+        color: white;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 2px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.2s;
+      }
+      .checkout-btn:hover {
+        background: linear-gradient(to right, #66c0f4 5%, #2a56d4 60%);
+      }
+      .theme-toggle {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        z-index: 100;
+        transition: all 0.2s;
+      }
+      .theme-toggle:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .notification {
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        background: var(--success);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 3px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        z-index: 3000;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .notification.show {
+        transform: translateX(0);
+      }
+      @media (max-width: 768px) {
+        .nav {
+          display: none;
+        }
+        .store-switch {
+          display: none;
+        }
+        .products-grid {
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+          gap: 10px;
+        }
+        .product-image {
+          height: 150px;
+          font-size: 50px;
+        }
+        .featured-collection {
+          grid-template-columns: 1fr;
+        }
+        .collection-image {
+          height: 200px;
+        }
+        .hero-banner {
+          padding: 25px;
+        }
+        .hero-title {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <a href="index.html" class="logo">STEAM</a>
+        <nav class="nav">
+          <a href="index.html">Магазин</a>
+          <a href="library.html">Библиотека</a>
+          <a href="community.html">Сообщество</a>
+          <a href="profile.html">Профиль</a>
+        </nav>
+        <div class="header-actions">
+          <div class="store-switch">
+            <a href="index.html">Игры</a>
+            <a href="merch.html" class="active">Мерч</a>
+          </div>
+          <a href="#" class="cart-btn" onclick="openCart(event)"
+            >Корзина <span class="cart-count" id="cartCount">0</span></a
+          >
+        </div>
+      </div>
+    </header>
+
+    <div class="sub-header">
+      <div class="sub-header-content">
+        <nav class="sub-nav">
+          <a href="#collectors" class="active">Коллекционные</a>
+          <a href="#apparel">Одежда</a>
+          <a href="#accessories">Аксессуары</a>
+          <a href="#home">Для дома</a>
+          <a href="#hardware">Периферия</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="main-container">
+      <div class="page-header">
+        <h1 class="page-title">Мерч и коллекционные наборы</h1>
+        <p class="page-subtitle">
+          Официальная продукция Valve и коллекционные предметы из ваших любимых
+          игр
+        </p>
+      </div>
+
+      <div class="hero-banner">
+        <div class="hero-content">
+          <span class="hero-badge">Ограниченная серия</span>
+          <h2 class="hero-title">Steam Deck OLED 1TB</h2>
+          <p class="hero-description">
+            Самый продвинутый портативный игровой ПК. Яркий OLED-экран 7.4",
+            больше времени автономной работы и Wi-Fi 6E.
+          </p>
+          <a href="product-deck.html" class="hero-btn">Подробнее</a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">📂</span> Категории товаров
+          </h2>
+        </div>
+        <div class="categories-grid">
+          <a href="#collectors" class="category-card"
+            ><div class="category-icon">🎁</div>
+            <div class="category-name">Коллекционные наборы</div>
+            <div class="category-count">8 товаров</div></a
+          >
+          <a href="#apparel" class="category-card"
+            ><div class="category-icon">👕</div>
+            <div class="category-name">Одежда</div>
+            <div class="category-count">12 товаров</div></a
+          >
+          <a href="#accessories" class="category-card"
+            ><div class="category-icon">🧢</div>
+            <div class="category-name">Аксессуары</div>
+            <div class="category-count">10 товаров</div></a
+          >
+          <a href="#home" class="category-card"
+            ><div class="category-icon">🏠</div>
+            <div class="category-name">Для дома</div>
+            <div class="category-count">15 товаров</div></a
+          >
+          <a href="#hardware" class="category-card"
+            ><div class="category-icon">🖱️</div>
+            <div class="category-name">Периферия Valve</div>
+            <div class="category-count">6 товаров</div></a
+          >
+          <a href="#artbook" class="category-card"
+            ><div class="category-icon">📚</div>
+            <div class="category-name">Артбуки</div>
+            <div class="category-count">5 товаров</div></a
+          >
+        </div>
+      </div>
+
+      <div class="section" id="collectors">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">🎁</span> Коллекционные наборы
+          </h2>
+          <a href="#" class="view-all">Смотреть все →</a>
+        </div>
+        <div class="products-grid">
+          <a href="product-hl-alyx-ce.html" class="product-card">
+            <span class="product-badge badge-limited">Ограниченная серия</span>
+            <div class="product-image">
+              <img
+                src="images/HalfLife.jpg"
+                alt="Half-Life: Alyx Collector's Edition"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Коллекционное издание</div>
+              <div class="product-title">
+                Half-Life: Alyx Collector's Edition
+              </div>
+              <div class="product-description">
+                Фигурка Alyx Vance 30см, артбук 200 стр., саундтрек на виниле,
+                уникальный код
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">14 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-portal2-ce.html" class="product-card">
+            <span class="product-badge badge-new">Новинка</span>
+            <div class="product-image">
+              <img
+                src="images/Portal.jpg"
+                alt="Portal 2 Collector's Edition"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Коллекционное издание</div>
+              <div class="product-title">Portal 2 Collector's Edition</div>
+              <div class="product-description">
+                Фигурки Atlas и P-body, постер с картой испытательных камер,
+                комикс Lab Rat
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">8 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-dota-aegis.html" class="product-card">
+            <span class="product-badge badge-limited">Ограниченная серия</span>
+            <div class="product-image">
+              <img
+                src="images/Dota2.jpeg"
+                alt="Dota 2 Aegis of Champions 2023"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Коллекционное издание</div>
+              <div class="product-title">Dota 2 Aegis of Champions 2023</div>
+              <div class="product-description">
+                Официальная реплика Aegis из The International 2023, сертификат
+                подлинности
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">12 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-csgo-10year.html" class="product-card">
+            <span class="product-badge badge-sale">-25%</span>
+            <div class="product-image">
+              <img
+                src="images/CSGO year.jpg"
+                alt="CS:GO 10 Year Anniversary Pack"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Коллекционное издание</div>
+              <div class="product-title">CS:GO 10 Year Anniversary Pack</div>
+              <div class="product-description">
+                Юбилейная медаль, наклейки, значки, артбук 10 лет CS:GO
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-original">7 999 ₽</span
+                  ><span class="price-current sale">5 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-tf2-ce.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Team Fortress.jpg"
+                alt="Team Fortress 2 Classic Pack"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Коллекционное издание</div>
+              <div class="product-title">Team Fortress 2 Classic Pack</div>
+              <div class="product-description">
+                Фигурки всех 9 классов, плакат, код на уникальную шапку в игре
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">6 499 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-l4d2-ce.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/leftdead.jpg"
+                alt="Left 4 Dead 2 Survivor Pack"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Коллекционное издание</div>
+              <div class="product-title">Left 4 Dead 2 Survivor Pack</div>
+              <div class="product-description">
+                Фигурки выживших, футболка, постер, наклейки
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">4 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="featured-collection">
+          <div class="collection-image">
+            <img
+              src="images/oledd.webp"
+              alt="Steam Deck OLED 1TB"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+          <div class="collection-content">
+            <h3>Steam Deck OLED 1TB</h3>
+            <p>
+              Самый продвинутый портативный игровой ПК от Valve. HDR-экран,
+              увеличенное время работы, быстрее загрузки.
+            </p>
+            <ul class="collection-features">
+              <li>OLED-экран 7.4" с HDR</li>
+              <li>1TB NVMe SSD</li>
+              <li>Wi-Fi 6E</li>
+              <li>До 12 часов игры</li>
+            </ul>
+            <div class="product-footer" style="border: none; padding: 0">
+              <div class="product-price">
+                <span class="price-current">74 999 ₽</span>
+              </div>
+              <a
+                href="product-deck.html"
+                class="hero-btn"
+                style="padding: 10px 25px; font-size: 13px"
+                >Подробнее</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="apparel">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">👕</span> Одежда
+          </h2>
+          <a href="#" class="view-all">Смотреть все →</a>
+        </div>
+        <div class="products-grid">
+          <a href="product-shirt-steam.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Футболка Steam Logo Classic.jpg"
+                alt="Steam Logo Classic T-Shirt"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Футболка</div>
+              <div class="product-title">Футболка Steam Logo Classic</div>
+              <div class="product-description">
+                100% хлопок премиум качества, классический логотип Steam,
+                размеры S-XXL
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">2 499 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-hoodie-csgo.html" class="product-card">
+            <span class="product-badge badge-new">Новинка</span>
+            <div class="product-image">
+              <img
+                src="images/Худи CSGO Counter-Terrorist.jpg"
+                alt="Худи CS:GO Counter-Terrorist"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Худи</div>
+              <div class="product-title">Худи CS:GO Counter-Terrorist</div>
+              <div class="product-description">
+                Тёплое худи с принтом CT, качественная вышивка логотипа, 80%
+                хлопок
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">4 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-shirt-dota.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Футболка Дота2.jpg"
+                alt="Футболка Dota 2"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Футболка</div>
+              <div class="product-title">Футболка Dota 2 Radiant vs Dire</div>
+              <div class="product-description">
+                Двусторонний принт с символикой Radiant и Dire, премиум качество
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-original">3 499 ₽</span
+                  ><span class="price-current sale">2 799 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-cap-valve.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/кепккааааа.png"
+                alt="Кепка Valve Logo Snapback"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Аксессуар</div>
+              <div class="product-title">Кепка Valve Logo Snapback</div>
+              <div class="product-description">
+                Классическая snapback с вышитым логотипом Valve, регулируемый
+                размер
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">1 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-socks-portal.html" class="product-card">
+            <span class="product-badge badge-new">Новинка</span>
+            <div class="product-image">
+              <img
+                src="images/Носкииии.jpg"
+                alt="Носки Portal Companion Cube"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Носки</div>
+              <div class="product-title">Носки Portal Companion Cube</div>
+              <div class="product-description">
+                Набор из 3 пар носков с дизайном Companion Cube, 80% хлопок
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">1 299 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-jacket-hl.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/курткаааааа.jpg"
+                alt="Куртка Half-Life HEV Suit"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Куртка</div>
+              <div class="product-title">Куртка Half-Life HEV Suit</div>
+              <div class="product-description">
+                Ветровка в стиле костюма HEV, оранжевые вставки, логотип Black
+                Mesa
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">7 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="section" id="accessories">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">🧢</span> Аксессуары
+          </h2>
+          <a href="#" class="view-all">Смотреть все →</a>
+        </div>
+        <div class="products-grid">
+          <a href="product-backpack-steam.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/сумкаааааавы.jpg"
+                alt="Рюкзак Steam Deck Carry Case"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Рюкзак</div>
+              <div class="product-title">Рюкзак Steam Deck Carry Case</div>
+              <div class="product-description">
+                Официальный чехол-рюкзак для Steam Deck с отделением для
+                аксессуаров
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">3 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-lanyard-csgo.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/брелок.jpg"
+                alt="Брелок CS:GO Weapon Keychain Set"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Брелок</div>
+              <div class="product-title">Брелок CS:GO Weapon Keychain Set</div>
+              <div class="product-description">
+                Набор из 5 миниатюрных брелоков в виде оружия из CS:GO
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">1 499 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-pin-dota.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Значки Dota 2 Hero Pins Series 1.png"
+                alt="Значки Dota 2 Hero Pins Series 1"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Значки</div>
+              <div class="product-title">Значки Dota 2 Hero Pins Series 1</div>
+              <div class="product-description">
+                Набор из 6 коллекционных значков с героями Dota 2
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">1 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-wallet-tf2.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Кошелёк Team Fortress 2.jpg"
+                alt="Кошелёк Team Fortress 2"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Кошелёк</div>
+              <div class="product-title">Кошелёк Team Fortress 2</div>
+              <div class="product-description">
+                Кожаный кошелёк с принтом TF2, отделения для карт и монет
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">2 299 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="section" id="home">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">🏠</span> Для дома и офиса
+          </h2>
+          <a href="#" class="view-all">Смотреть все →</a>
+        </div>
+        <div class="products-grid">
+          <a href="product-mug-portal.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Кружка Portal Companion Cube.webp"
+                alt="Кружка Portal Companion Cube"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Посуда</div>
+              <div class="product-title">Кружка Portal Companion Cube</div>
+              <div class="product-description">
+                Керамическая кружка 350мл с дизайном Companion Cube, подходит
+                для микроволновки
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">1 499 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-mousepad-csgo.html" class="product-card">
+            <span class="product-badge badge-sale">-30%</span>
+            <div class="product-image">
+              <img
+                src="images/Коврик для мыши CSGO Dust II XXL.jpg"
+                alt="Коврик для мыши CS:GO Dust II XXL"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Аксессуар</div>
+              <div class="product-title">Коврик для мыши CS:GO Dust II XXL</div>
+              <div class="product-description">
+                Большой игровой коврик 900x400мм с картой Dust II, прошитые края
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-original">1 899 ₽</span
+                  ><span class="price-current sale">1 299 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-poster-hl.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Постер Half-Life Alyx City.jpeg"
+                alt="Постер Half-Life: Alyx City 17"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Постер</div>
+              <div class="product-title">Постер Half-Life: Alyx City 17</div>
+              <div class="product-description">
+                Арт-постер 60x90см на матовой бумаге 200г/м², ламинированный
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-stickers-valve.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Набор стикеров Valve Games Mega Pack.jpg"
+                alt="Набор стикеров Valve Games Mega Pack"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Стикеры</div>
+              <div class="product-title">
+                Набор стикеров Valve Games Mega Pack
+              </div>
+              <div class="product-description">
+                100 виниловых стикеров с персонажами из всех игр Valve
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">1 299 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-blanket-dota.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Плед Dota 2 Battle Map.jpg"
+                alt="Плед Dota 2 Battle Map"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Текстиль</div>
+              <div class="product-title">Плед Dota 2 Battle Map</div>
+              <div class="product-description">
+                Мягкий плед 150x200см с картой игрового поля Dota 2
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">3 499 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-lamp-portal.html" class="product-card">
+            <span class="product-badge badge-new">Новинка</span>
+            <div class="product-image">
+              <img
+                src="images/лампааа.png"
+                alt="Лампа Portal USB Light"
+                class="product-img"
+              />
+            </div>
+
+            <div class="product-info">
+              <div class="product-category">Светильник</div>
+              <div class="product-title">Лампа Portal USB Light</div>
+              <div class="product-description">
+                USB-лампа в форме портала, меняет цвета, сенсорное управление
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">2 499 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="section" id="hardware">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">🖥️</span> Периферия Valve
+          </h2>
+          <a href="#" class="view-all">Смотреть все →</a>
+        </div>
+        <div class="products-grid">
+          <a href="product-index-vr.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Valve Index VR Full Kit.webp"
+                alt="Valve Index VR Full Kit"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">VR-система</div>
+              <div class="product-title">Valve Index VR Full Kit</div>
+              <div class="product-description">
+                Полный комплект: шлем, контроллеры Knuckles, 2 базовые станции
+                2.0
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">119 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-controller-steam.html" class="product-card">
+            <span class="product-badge badge-rare">Раритет</span>
+            <div class="product-image">
+              <img
+                src="images/Steam Controller (Limited Edition).jpg"
+                alt="Steam Controller (Limited Edition)"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Контроллер</div>
+              <div class="product-title">
+                Steam Controller (Limited Edition)
+              </div>
+              <div class="product-description">
+                Легендарный контроллер Steam, новый в запечатанной упаковке,
+                коллекционный
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">8 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-steamlink.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Steam Link.webp"
+                alt="Steam Link"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Стриминг</div>
+              <div class="product-title">Steam Link</div>
+              <div class="product-description">
+                Устройство для стриминга игр с ПК на ТВ, поддержка 1080p 60fps
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">4 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-dock-deck.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Док-станция Steam Deck Official.jpg"
+                alt="Док-станция Steam Deck Official"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Аксессуар</div>
+              <div class="product-title">Док-станция Steam Deck Official</div>
+              <div class="product-description">
+                Официальная док-станция с HDMI 2.0, 3xUSB 3.0, Ethernet, питание
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">8 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="section" id="artbook">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">📚</span> Артбуки и саундтреки
+          </h2>
+          <a href="#" class="view-all">Смотреть все →</a>
+        </div>
+        <div class="products-grid">
+          <a href="product-artbook-hl.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/The Art of Half-Life Alyx.jpg"
+                alt="Артбук Half-Life: Alyx"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Артбук</div>
+              <div class="product-title">The Art of Half-Life: Alyx</div>
+              <div class="product-description">
+                Официальный артбук 280 стр., концепт-арты, интервью с
+                разработчиками
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">3 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-vinyl-portal.html" class="product-card">
+            <span class="product-badge badge-limited">Ограниченная серия</span>
+            <div class="product-image">
+              <img
+                src="images/Portal 2 Soundtrack Vinyl.png"
+                alt="Portal 2 Soundtrack Vinyl"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Винил</div>
+              <div class="product-title">Portal 2 Soundtrack Vinyl</div>
+              <div class="product-description">
+                Саундтрек на цветном виниле 2LP, постер, код на цифровую версию
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">4 499 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+          <a href="product-artbook-dota.html" class="product-card">
+            <div class="product-image">
+              <img
+                src="images/Dota 2 The Comic Collection.png"
+                alt="Dota 2: The Comic Collection"
+                class="product-img"
+              />
+            </div>
+            <div class="product-info">
+              <div class="product-category">Артбук</div>
+              <div class="product-title">Dota 2: The Comic Collection</div>
+              <div class="product-description">
+                Сборник комиксов по Dota 2, 320 страниц, твёрдый переплёт
+              </div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">2 999 ₽</span>
+                </div>
+                <span style="color: var(--accent); font-size: 12px"
+                  >Подробнее →</span
+                >
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="cartModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">Корзина</h3>
+          <button class="modal-close" onclick="closeCart()">&times;</button>
+        </div>
+        <div class="modal-body" id="cartBody">
+          <div class="cart-empty">
+            <div class="cart-empty-icon">🛒</div>
+            <p>Ваша корзина пуста</p>
+          </div>
+        </div>
+        <div class="modal-footer" id="cartFooter" style="display: none">
+          <div class="cart-total">
+            <span>Итого:</span
+            ><span class="cart-total-price" id="cartTotal">0 ₽</span>
+          </div>
+          <button class="checkout-btn" onclick="checkout()">
+            Оформить заказ
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="notification" id="notification">
+      <span>✓</span><span id="notificationText">Товар добавлен</span>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <script>
+      let cart = JSON.parse(localStorage.getItem("merchCart") || "[]");
+      let isDarkTheme = true;
+      const products = {
+        ce1: { title: "Half-Life: Alyx CE", price: 14999, emoji: "🎁" },
+        ce2: { title: "Portal 2 CE", price: 8999, emoji: "🌀" },
+        ce3: { title: "Dota 2 Aegis", price: 12999, emoji: "🏆" },
+        ce4: { title: "CS:GO 10 Year", price: 5999, emoji: "🔫" },
+        sd1: { title: "Steam Deck OLED", price: 74999, emoji: "🎮" },
+        ap1: { title: "Футболка Steam", price: 2499, emoji: "👕" },
+        ap2: { title: "Худи CS:GO CT", price: 4999, emoji: "🧥" },
+        ap3: { title: "Футболка Dota 2", price: 2799, emoji: "👕" },
+        ap4: { title: "Кепка Valve", price: 1999, emoji: "🧢" },
+        hm1: { title: "Кружка Portal", price: 1499, emoji: "☕" },
+        hm2: { title: "Коврик CS:GO", price: 1299, emoji: "🖱️" },
+        hm3: { title: "Постер HL", price: 999, emoji: "🖼️" },
+        hm4: { title: "Стикеры Valve", price: 1299, emoji: "🏷️" },
+        hw1: { title: "Valve Index VR", price: 119999, emoji: "🥽" },
+        hw2: { title: "Steam Controller", price: 8999, emoji: "🎮" },
+        hw3: { title: "Steam Link", price: 4999, emoji: "📡" },
+        hw4: { title: "Док-станция Deck", price: 8999, emoji: "🔌" },
+      };
+      function init() {
+        loadTheme();
+        updateCartUI();
+      }
+      function loadTheme() {
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        isDarkTheme = savedTheme === "dark";
+        document.body.setAttribute("data-theme", savedTheme);
+        document.querySelector(".theme-toggle").textContent = isDarkTheme
+          ? "🌙"
+          : "☀️";
+      }
+      function toggleTheme() {
+        isDarkTheme = !isDarkTheme;
+        const theme = isDarkTheme ? "dark" : "light";
+        document.body.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+        document.querySelector(".theme-toggle").textContent = isDarkTheme
+          ? "🌙"
+          : "☀️";
+      }
+      function addToCart(productId) {
+        const product = products[productId];
+        if (!product) return;
+        const existingItem = cart.find((item) => item.id === productId);
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          cart.push({
+            id: productId,
+            title: product.title,
+            price: product.price,
+            emoji: product.emoji,
+            quantity: 1,
+          });
+        }
+        saveCart();
+        updateCartUI();
+        showNotification(product.title + " добавлен");
+      }
+      function removeFromCart(productId) {
+        cart = cart.filter((item) => item.id !== productId);
+        saveCart();
+        updateCartUI();
+        renderCartItems();
+      }
+      function saveCart() {
+        localStorage.setItem("merchCart", JSON.stringify(cart));
+      }
+      function updateCartUI() {
+        const cartCount = document.getElementById("cartCount");
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+        cartCount.classList.toggle("active", totalItems > 0);
+      }
+      function renderCartItems() {
+        const cartBody = document.getElementById("cartBody");
+        const cartFooter = document.getElementById("cartFooter");
+        const cartTotal = document.getElementById("cartTotal");
+        if (cart.length === 0) {
+          cartBody.innerHTML =
+            '<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Ваша корзина пуста</p></div>';
+          cartFooter.style.display = "none";
+          return;
+        }
+        let total = 0;
+        cartBody.innerHTML = cart
+          .map((item) => {
+            total += item.price * item.quantity;
+            return (
+              '<div class="cart-item"><div class="cart-item-image">' +
+              item.emoji +
+              '</div><div class="cart-item-info"><div class="cart-item-title">' +
+              item.title +
+              '</div><div class="cart-item-type">Количество: ' +
+              item.quantity +
+              '</div></div><div class="cart-item-price">' +
+              (item.price * item.quantity).toLocaleString() +
+              ' ₽</div><button class="cart-item-remove" onclick="removeFromCart(\'' +
+              item.id +
+              "')\">&times;</button></div>"
+            );
+          })
+          .join("");
+        cartTotal.textContent = total.toLocaleString() + " ₽";
+        cartFooter.style.display = "block";
+      }
+      function openCart(event) {
+        if (event) event.preventDefault();
+        renderCartItems();
+        document.getElementById("cartModal").classList.add("active");
+      }
+      function closeCart() {
+        document.getElementById("cartModal").classList.remove("active");
+      }
+      function checkout() {
+        if (cart.length === 0) return;
+        const total = cart.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0,
+        );
+        alert(
+          "Заказ оформлен!\n\nСумма: " +
+            total.toLocaleString() +
+            " ₽\n\nСпасибо за покупку!",
+        );
+        cart = [];
+        saveCart();
+        updateCartUI();
+        closeCart();
+      }
+      function showNotification(text) {
+        const notification = document.getElementById("notification");
+        document.getElementById("notificationText").textContent = text;
+        notification.classList.add("show");
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+      document
+        .getElementById("cartModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeCart();
+        });
+      init();
+    </script>
+  </body>
+</html>

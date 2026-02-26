@@ -1,0 +1,796 @@
+<!-- profile.html - Профиль с регистрацией -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль - Steam</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #171a21;
+            --bg-secondary: #1b2838;
+            --bg-tertiary: #2a475e;
+            --accent: #66c0f4;
+            --text-primary: #c7d5e0;
+            --text-secondary: #8f98a0;
+            --success: #a1cd44;
+            --danger: #ff6b6b;
+            --border-color: rgba(255,255,255,0.1);
+            --card-bg: #16202d;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e8e8e8;
+            --accent: #1a9fff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --success: #5a8f11;
+            --danger: #d44;
+            --border-color: rgba(0,0,0,0.1);
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: "Motiva Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Header (такой же как в index.html) */
+        .header {
+            background: #171a21;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-top {
+            padding: 0 20px;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 50px;
+        }
+
+        .logo-nav {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #1a44c2, #47bfff);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo-icon::before {
+            content: "";
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .logo-icon::after {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            right: 4px;
+            top: 30%;
+        }
+
+        .logo-text {
+            color: #c7d5e0;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav {
+            display: flex;
+            gap: 0;
+        }
+
+        .nav a {
+            color: #c7d5e0;
+            text-decoration: none;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 15px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav a:hover {
+            color: #ffffff;
+            border-bottom-color: #66c0f4;
+        }
+
+        .nav a.active {
+            color: #66c0f4;
+            border-bottom-color: #66c0f4;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .install-btn {
+            background: #5c7e10;
+            color: #d2efa9;
+            border: none;
+            padding: 6px 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 2px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .install-btn:hover {
+            background: #7ea64b;
+            color: white;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #b8b6b4;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 2px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .user-menu:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #2a475e, #1b2838);
+            border-radius: 2px;
+            border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border-radius: 3px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-avatar-large {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #2a475e, #1b2838);
+            border-radius: 3px;
+            border: 3px solid var(--accent);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .profile-level {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .profile-status {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .profile-section {
+            background: var(--card-bg);
+            border-radius: 3px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 18px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Auth Forms */
+        .auth-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .auth-tab {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .auth-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .auth-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 3px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        [data-theme="light"] .form-group input {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(102, 192, 244, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #47bfff 5%, #1a44c2 60%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #66c0f4 5%, #2a56d4 60%);
+            box-shadow: 0 0 15px rgba(102, 192, 244, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 20px;
+            font-size: 13px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            padding: 20px;
+            border-radius: 3px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .recent-games {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .game-mini {
+            background: var(--bg-primary);
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .game-mini-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1b2838, #2a475e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 12px;
+        }
+
+        .game-mini-info {
+            padding: 10px;
+        }
+
+        .game-mini-title {
+            font-size: 12px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .game-mini-hours {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            color: var(--success);
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            border-color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recent-games {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="header-content">
+                <div class="logo-nav">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon"></div>
+                        <span class="logo-text">STEAM</span>
+                    </a>
+                    <nav class="nav">
+                        <a href="index.html">Магазин</a>
+                        <a href="library.html">Библиотека</a>
+                        <a href="community.html">Сообщество</a>
+                        <a href="profile.html" class="active">Профиль</a>
+                    </nav>
+                </div>
+                <div class="header-actions">
+                    <a href="https://store.steampowered.com/about/" target="_blank" class="install-btn">Установить Steam</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Not Logged In View -->
+        <div id="authView" class="profile-section">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Вход</button>
+                <button class="auth-tab" onclick="switchTab('register')">Регистрация</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label>Имя пользователя</label>
+                    <input type="text" id="loginUsername" required placeholder="Введите имя пользователя">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="loginPassword" required placeholder="Введите пароль">
+                </div>
+                <div class="error-message" id="loginError">Неверное имя пользователя или пароль</div>
+                <button type="submit" class="btn-primary">Войти</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="hidden" onsubmit="return handleRegister(event)">
+                <div class="form-group">
+                    <label>Имя пользователя</label>
+                    <input type="text" id="regUsername" required placeholder="Придумайте имя пользователя" minlength="3" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="regPassword" required placeholder="Придумайте пароль" minlength="6">
+                </div>
+                <div class="form-group">
+                    <label>Подтвердите пароль</label>
+                    <input type="password" id="regPasswordConfirm" required placeholder="Повторите пароль">
+                </div>
+                <div class="error-message" id="registerError"></div>
+                <div class="success-message" id="registerSuccess">Регистрация успешна! Теперь вы можете войти.</div>
+                <button type="submit" class="btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+
+        <!-- Logged In View -->
+        <div id="profileView" class="hidden">
+            <div class="profile-header">
+                <div class="profile-avatar-large" id="profileAvatar">
+                    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #2a475e, #1b2838);color:white;font-size:48px;" id="profileAvatarText">?</div>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-level" id="profileLevel">Уровень 1</div>
+                    <h1 id="profileName">Игрок</h1>
+                    <div class="profile-status" id="profileStatus">В сети</div>
+                    <button class="btn-secondary" onclick="logout()">Выйти</button>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2 class="section-title">Статистика</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statGames">0</div>
+                        <div class="stat-label">Игр в библиотеке</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statHours">0</div>
+                        <div class="stat-label">Часов в играх</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statAchievements">0</div>
+                        <div class="stat-label">Достижений</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2 class="section-title">Недавно купленные</h2>
+                <div class="recent-games" id="recentGames">
+                    <div style="color: var(--text-secondary); text-align: center; padding: 40px; grid-column: 1/-1;">
+                        Пока нет купленных игр. <a href="index.html" style="color: var(--accent);">Перейти в магазин</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</button>
+
+    <script>
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let isDarkTheme = true;
+
+        // Initialize
+        function init() {
+            loadTheme();
+            if (currentUser) {
+                showProfile();
+            } else {
+                showAuth();
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            isDarkTheme = savedTheme === 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+            document.getElementById('themeToggle').textContent = isDarkTheme ? '🌙' : '☀️';
+        }
+
+        function toggleTheme() {
+            isDarkTheme = !isDarkTheme;
+            const theme = isDarkTheme ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            document.getElementById('themeToggle').textContent = isDarkTheme ? '🌙' : '☀️';
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'login') {
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+            } else {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.remove('hidden');
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+            const errorEl = document.getElementById('registerError');
+            const successEl = document.getElementById('registerSuccess');
+            
+            // Validation
+            if (password !== passwordConfirm) {
+                errorEl.textContent = 'Пароли не совпадают';
+                errorEl.style.display = 'block';
+                return false;
+            }
+            
+            // Check if user exists
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.find(u => u.username === username)) {
+                errorEl.textContent = 'Пользователь с таким именем уже существует';
+                errorEl.style.display = 'block';
+                return false;
+            }
+            
+            if (users.find(u => u.email === email)) {
+                errorEl.textContent = 'Пользователь с таким email уже существует';
+                errorEl.style.display = 'block';
+                return false;
+            }
+            
+            // Create user
+            const newUser = {
+                id: Date.now(),
+                username,
+                email,
+                password, // В реальном приложении нужно хешировать!
+                level: 1,
+                avatar: null,
+                createdAt: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            errorEl.style.display = 'none';
+            successEl.style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('registerForm').reset();
+                successEl.style.display = 'none';
+                switchTab('login');
+            }, 2000);
+            
+            return false;
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorEl = document.getElementById('loginError');
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (!user) {
+                errorEl.style.display = 'block';
+                return false;
+            }
+            
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            errorEl.style.display = 'none';
+            
+            showProfile();
+            return false;
+        }
+
+        function showProfile() {
+            document.getElementById('authView').classList.add('hidden');
+            document.getElementById('profileView').classList.remove('hidden');
+            
+            document.getElementById('profileName').textContent = currentUser.username;
+            document.getElementById('profileLevel').textContent = `Уровень ${currentUser.level || 1}`;
+            document.getElementById('profileAvatarText').textContent = currentUser.username[0].toUpperCase();
+            
+            // Load stats
+            const library = JSON.parse(localStorage.getItem('library') || '[]');
+            document.getElementById('statGames').textContent = library.length;
+            
+            // Load recent games
+            const recentGamesEl = document.getElementById('recentGames');
+            if (library.length > 0) {
+                recentGamesEl.innerHTML = library.slice(-4).map(game => `
+                    <div class="game-mini">
+                        <div class="game-mini-image">🎮</div>
+                        <div class="game-mini-info">
+                            <div class="game-mini-title">${game.title}</div>
+                            <div class="game-mini-hours">Куплено: ${new Date(game.purchaseDate).toLocaleDateString()}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function showAuth() {
+            document.getElementById('authView').classList.remove('hidden');
+            document.getElementById('profileView').classList.add('hidden');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showAuth();
+        }
+
+        // Start
+        init();
+    </script>
+</body>
+</html>

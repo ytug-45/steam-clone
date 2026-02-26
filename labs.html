@@ -1,0 +1,104 @@
+<!-- labs.html - Лаборатории -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лаборатории - Steam</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--bg-primary:#171a21;--bg-secondary:#1b2838;--accent:#66c0f4;--text-primary:#c7d5e0;--text-secondary:#8f98a0;--border-color:rgba(255,255,255,0.1);--card-bg:#16202d}
+        [data-theme="light"]{--bg-primary:#f5f5f5;--bg-secondary:#ffffff;--accent:#1a9fff;--text-primary:#333333;--text-secondary:#666666;--border-color:rgba(0,0,0,0.1);--card-bg:#ffffff}
+        body{font-family:"Motiva Sans",Helvetica,Arial,sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
+        .header{background:#171a21;padding:0 20px;position:sticky;top:0;z-index:1000}
+        .header-content{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:50px}
+        .logo{color:#c7d5e0;text-decoration:none;font-size:22px;font-weight:600}
+        .nav{display:flex;gap:20px}
+        .nav a{color:#c7d5e0;text-decoration:none;text-transform:uppercase;font-size:13px;padding:5px 10px}
+        .nav a.active{color:#66c0f4;border-bottom:2px solid #66c0f4}
+        .main-container{max-width:1200px;margin:30px auto;padding:0 20px}
+        .page-title{font-size:24px;text-transform:uppercase;margin-bottom:10px;padding-bottom:15px;border-bottom:1px solid var(--border-color)}
+        .page-subtitle{color:var(--text-secondary);margin-bottom:30px}
+        .labs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:25px}
+        .lab-card{background:var(--card-bg);border-radius:3px;padding:30px;border:1px solid var(--border-color);transition:all 0.2s}
+        .lab-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+        .lab-icon{font-size:48px;margin-bottom:20px}
+        .lab-title{font-size:20px;color:var(--accent);margin-bottom:10px}
+        .lab-desc{color:var(--text-secondary);line-height:1.6;margin-bottom:20px}
+        .lab-btn{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:8px 20px;border-radius:2px;cursor:pointer;transition:all 0.2s}
+        .lab-btn:hover{background:var(--accent);color:white}
+        .theme-toggle{position:fixed;bottom:30px;right:30px;background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-primary);width:50px;height:50px;border-radius:50%;cursor:pointer;font-size:20px;z-index:100}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">STEAM</a>
+            <nav class="nav">
+                <a href="index.html">Магазин</a>
+                <a href="library.html">Библиотека</a>
+                <a href="community.html">Сообщество</a>
+                <a href="profile.html">Профиль</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <h1 class="page-title">Лаборатории Steam</h1>
+        <p class="page-subtitle">Экспериментальные функции и инструменты для персонализации вашего опыта</p>
+        
+        <div class="labs-grid">
+            <div class="lab-card">
+                <div class="lab-icon">🧪</div>
+                <h3 class="lab-title">Интерактивные рекомендации</h3>
+                <p class="lab-desc">Улучшенный алгоритм подбора игр на основе ваших предпочтений, времени игры и оценок друзей.</p>
+                <button class="lab-btn">Попробовать</button>
+            </div>
+            
+            <div class="lab-card">
+                <div class="lab-icon">🎨</div>
+                <h3 class="lab-title">Персонализация магазина</h3>
+                <p class="lab-desc">Настройте внешний вид магазина: выберите тему, расположение элементов и отображаемые категории.</p>
+                <button class="lab-btn">Настроить</button>
+            </div>
+            
+            <div class="lab-card">
+                <div class="lab-icon">🔍</div>
+                <h3 class="lab-title">Поиск по тегам</h3>
+                <p class="lab-desc">Новая система поиска с комбинированием тегов, исключением жанров и фильтрацией по метаданным.</p>
+                <button class="lab-btn">Искать</button>
+            </div>
+            
+            <div class="lab-card">
+                <div class="lab-icon">📊</div>
+                <h3 class="lab-title">Статистика игр</h3>
+                <p class="lab-desc">Подробная аналитика ваших игровых сессий: время, достижения, сравнение с друзьями.</p>
+                <button class="lab-btn">Смотреть</button>
+            </div>
+            
+            <div class="lab-card">
+                <div class="lab-icon">🤖</div>
+                <h3 class="lab-title">AI Помощник</h3>
+                <p class="lab-desc">Искусственный интеллект поможет найти идеальную игру, ответит на вопросы и подскажет акции.</p>
+                <button class="lab-btn">Чат</button>
+            </div>
+            
+            <div class="lab-card">
+                <div class="lab-icon">🌐</div>
+                <h3 class="lab-title">Steam Translate</h3>
+                <p class="lab-desc">Помогите переводить Steam на разные языки. Улучшайте существующие переводы и получайте награды.</p>
+                <button class="lab-btn">Участвовать</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <script>
+        let isDarkTheme=true;
+        function loadTheme(){const savedTheme=localStorage.getItem('theme')||'dark';isDarkTheme=savedTheme==='dark';document.body.setAttribute('data-theme',savedTheme);document.querySelector('.theme-toggle').textContent=isDarkTheme?'🌙':'☀️'}
+        function toggleTheme(){isDarkTheme=!isDarkTheme;const theme=isDarkTheme?'dark':'light';document.body.setAttribute('data-theme',theme);localStorage.setItem('theme',theme);document.querySelector('.theme-toggle').textContent=isDarkTheme?'🌙':'☀️'}
+        loadTheme();
+    </script>
+</body>
+</html>
